@@ -161,3 +161,16 @@ def make_equiv_image_dest_fps(src_top_level_dir, dest_top_level_dir, src_fps):
         dest_fp = pathlib.Path(str(src_fp).replace(orig_dir, new_dir))
         dest_fps.append(dest_fp)
     return dest_fps
+
+
+def get_matching_filepaths(left_df_fps,
+                           right_df_fps,
+                           left_source,
+                           right_source):
+    left_fps = [fp for fp in left_df_fps if
+                pathlib.Path(str(fp).replace(left_source, right_source))
+                in right_df_fps]
+    right_fps = [fp for fp in right_df_fps if
+                 pathlib.Path(str(fp).replace(left_source, right_source))
+                 in right_df_fps]
+    return left_fps, right_fps
