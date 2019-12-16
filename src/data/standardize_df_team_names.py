@@ -65,7 +65,7 @@ def standardize_dfs(dfs, std_dict_top_dir):
     return stdzed_dfs
 
 
-def standardize_df_team_names(source_dir):
+def standardize_all_dfs(source_dir):
     filepaths = get_filepaths(CLEANED_DIR / source_dir, ext='csv')
     dfs = read_csvs_to_dfs(filepaths)
     stdzed_dfs = standardize_dfs(dfs, REF_DIR)
@@ -78,6 +78,10 @@ def standardize_df_team_names(source_dir):
     print(n_saved)
 
 
-if __name__ == "__main__":
+def standardize_df_team_names():
     for source_dir in ['football-data-co-uk', 'indatabet-com']:
-        standardize_df_team_names(source_dir)
+        standardize_all_dfs(source_dir)
+
+
+if __name__ == "__main__":
+    standardize_df_team_names()

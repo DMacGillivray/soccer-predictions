@@ -98,6 +98,10 @@ def standardize_image_team_names(source_dir):
     print(n_copied)
 
 
-if __name__ == "__main__":
+def standardize_image_sources():
     for source_dir in ['whoscored-com-heatmaps', 'whoscored-com-shotmaps']:
         standardize_image_team_names(source_dir)
+
+
+if __name__ == "__main__":
+    standardize_image_sources()

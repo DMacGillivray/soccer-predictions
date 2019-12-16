@@ -5,6 +5,38 @@ import pandas as pd
 import numpy as np
 
 
+def get_nations(filepaths):
+    nations = list(np.unique([str(fp).split('/')[-4] for fp in filepaths]))
+    return nations
+
+
+def get_nations_leagues(filepaths, nations):
+    expanded_nations = []
+    leagues = []
+    for nation in nations:
+        national_leagues = list(np.unique([str(fp).split('/')[-3] for
+                                fp in filepaths if nation in str(fp)]))
+        expanded_nations.extend([nation] * len(national_leagues))
+        leagues.extend(national_leagues)
+    return expanded_nations, leagues
+
+
+def get_seasons(filepaths):
+    seasons = sorted(list(np.unique([str(fp).split('/')[-2] for
+                                     fp in filepaths])))
+    return seasons
+
+
+def get_actual_scope_dict(filepaths):
+    nations = get_nations(filepaths)
+    nations, leagues = get_nations_leagues(filepaths, nations)
+    possible_seasons = get_seasons(filepaths)
+    actual_scope_dict = {'nations': nations,
+                         'leagues': leagues,
+                         'seasons': possible_seasons}
+    return actual_scope_dict
+
+
 def load_pickle(parent_dir):
     """
     Accepts a parent directory Path object
