@@ -9,7 +9,8 @@ from pfuncs import (get_filepaths,
                     drop_all_nulls,
                     make_results_col,
                     lowercase_team_names,
-                    write_dfs_to_filepaths)
+                    write_dfs_to_filepaths,
+                    drop_ha_nulls)
 
 PROJECT_DIR = pathlib.Path().cwd().resolve()
 
@@ -127,6 +128,7 @@ def clean_up_dfs(dfs):
         df = parse_dates(df)
         df = drop_all_nulls(df, axis=1)
         df = drop_all_nulls(df, axis=0)
+        df = drop_ha_nulls(df)
         df = drop_unwanted_fdcuk_cols(df)
         df = standardize_duplicate_col_names(df)
         df = rename_fdcuk_cols(df)

@@ -174,7 +174,17 @@ def drop_unnamed(df_orig):
 def drop_all_nulls(df_orig, axis=1):
     df = df_orig.copy(deep=True)
     # Drop any columns that are all null
-    df = df_orig.dropna(axis=axis, how='all')
+    df = df.dropna(axis=axis, how='all')
+    return df
+
+
+def drop_ha_nulls(df_orig):
+    df = df_orig.copy(deep=True)
+    # Drop any rows where the home team and away team are not defined
+    if 'HomeTeam' in df.columns:
+        df = df.dropna(subset=['HomeTeam', 'AwayTeam'], axis=0)
+    if 'Home' in df.columns:
+        df = df.dropna(subset=['Home', 'Away'], axis=0)
     return df
 
 
