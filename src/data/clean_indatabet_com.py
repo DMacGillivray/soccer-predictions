@@ -7,7 +7,8 @@ from pfuncs import (get_filepaths,
                     drop_all_nulls,
                     make_results_col,
                     lowercase_team_names,
-                    write_dfs_to_filepaths)
+                    write_dfs_to_filepaths,
+                    drop_duplicate_rows)
 
 PROJECT_DIR = pathlib.Path().cwd().resolve()
 
@@ -35,6 +36,19 @@ def rename_indatabet_cols(df_orig):
     return df
 
 
+def clean_special_cases(df_orig):
+    df = df_orig.copy(deep=True)
+    # Apply to all make a 1,1 draw
+    if 'et_pen_awd' in df.columns:
+        if df['et_pen_awd'].isnull().sum() > 0:
+            # crit = df['et_pen_awd'].isnull()
+            idx = df[~df['et_pen_awd'].isnull()].index
+            df.loc[idx, ['h_ftGoals', 'a_ftGoals']] = [1.0, 0.0]
+    df[['h_ftGoals', 'a_ftGoals']] = \
+        df[['h_ftGoals', 'a_ftGoals']].astype(float)
+    return df
+
+
 def clean_up_dfs(dfs):
     clean_dfs = []
     for df in dfs:
@@ -42,8 +56,12 @@ def clean_up_dfs(dfs):
         df = drop_all_nulls(df, axis=1)
         df = drop_all_nulls(df, axis=0)
         df = rename_indatabet_cols(df)
-        df = make_results_col(df)
         df = lowercase_team_names(df)
+        df = drop_duplicate_rows(df)
+        df = clean_special_cases(df)
+        # after dealing with special cases
+        # because this is a merge column
+        df = make_results_col(df)
         clean_dfs.append(df)
     return clean_dfs
 

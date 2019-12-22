@@ -43,6 +43,7 @@ def load_pickle(parent_dir):
     which can contain only one pickled file with a .pkl extension
     Finds the file, loads it, and returns it
     """
+    # print(parent_dir)
     filepath = list(parent_dir.glob('*.pkl'))[0]
     with open(str(filepath), 'rb') as f:
         data = pickle.load(f)
@@ -134,17 +135,20 @@ def make_results_col(df_orig):
     COMMON !!!!!!!!!!!!!!!!!!!!!!!!
     """
     df = df_orig.copy(deep=True)
+    # print(df['nation'].unique())
+    # print(df['league'].unique())
+    # print(df['season'].unique())
     try:
         if 'result' in df.columns:
             df.drop(columns=['result'], inplace=True)
-            # Calculate Results column
+        # Calculate Results column
         conditions = [df['h_ftGoals'] > df['a_ftGoals'],
                       df['h_ftGoals'] == df['a_ftGoals'],
                       df['h_ftGoals'] < df['a_ftGoals']]
         choices = ['hwin', 'draw', 'awin']
         df['result'] = np.select(conditions, choices, default='not-played')
     except:
-        # Where there are abandoned matches or penalty finishes this fails
+        #  Where there are abandoned matches or penalty finishes this fails
         df['result'] = None
     return df
 
@@ -185,6 +189,12 @@ def drop_ha_nulls(df_orig):
         df = df.dropna(subset=['HomeTeam', 'AwayTeam'], axis=0)
     if 'Home' in df.columns:
         df = df.dropna(subset=['Home', 'Away'], axis=0)
+    return df
+
+
+def drop_duplicate_rows(df_orig):
+    df = df_orig.copy()
+    df.drop_duplicates(inplace=True)
     return df
 
 

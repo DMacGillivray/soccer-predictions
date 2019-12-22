@@ -38,6 +38,12 @@ def merger(football_df, odds_df2):
 def do_merge(left_dfs, right_dfs):
     merged_dfs = []
     for left_df, right_df in zip(left_dfs, right_dfs):
+        # print(left_df['nation'].unique(),
+        #         left_df['league'].unique(),
+        #         left_df['season'].unique())
+        # print(right_df['nation'].unique(),
+        #         right_df['league'].unique(),
+        #         right_df['season'].unique())
 
         # cast to float to enable a join cannot join on integer and float
         # This should move into Clean
@@ -54,6 +60,17 @@ def do_merge(left_dfs, right_dfs):
                                               downcast='float',
                                               axis=1)
 
+        left_df.sort_values(by=['date', 'h', 'a'], inplace=True)
+        right_df.sort_values(by=['date', 'h', 'a'], inplace=True)
+
+        # if 'et_pen_awd' in right_df.columns:
+        #     #if right_df['et_pen_awd'].null().sum() > 0:
+        #     inds = right_df.index[~right_df['et_pen_awd'].isnull()].tolist()
+        #     for ind in inds:
+        #         print(f'ind: {ind}')
+        #         # right_df['h_ftGoals'] = np.NaN
+        #         # right_df['a_ftGoals'] = np.NaN
+
         try:
             merged_df = pd.merge_asof(left_df, right_df,
                                       on='date',
@@ -61,12 +78,16 @@ def do_merge(left_dfs, right_dfs):
                                           'nation', 'league', 'season',
                                           'result'],
                                       suffixes=('_ic', '_fdcu'),
-                                      tolerance=pd.Timedelta(days=2),
+                                      tolerance=pd.Timedelta(days=10),
                                       direction='nearest')
             merged_df.sort_values(by='date', ascending=True, inplace=True)
             merged_dfs.append(merged_df)
         except pd.errors.MergeError:
-            print("MergeError:", sys.exc_info()[0])
+            # raise pd.errors.MergeError
+            err = sys.exc_info()[0]
+            print("MergeError:", err, err.args)
+            return left_df
+
     return merged_dfs
 
 

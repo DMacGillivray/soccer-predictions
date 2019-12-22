@@ -10,7 +10,8 @@ from pfuncs import (get_filepaths,
                     make_results_col,
                     lowercase_team_names,
                     write_dfs_to_filepaths,
-                    drop_ha_nulls)
+                    drop_ha_nulls,
+                    drop_duplicate_rows)
 
 PROJECT_DIR = pathlib.Path().cwd().resolve()
 
@@ -121,6 +122,15 @@ def rename_fdcuk_cols(df_orig):
     return df
 
 
+def drop_awarded(df_orig):
+    df = df_orig.copy(deep=True)
+
+    # if nation, league, season, h, a:
+    #     drop row
+
+    return df
+
+
 def clean_up_dfs(dfs):
     clean_dfs = []
     for df in dfs:
@@ -134,6 +144,8 @@ def clean_up_dfs(dfs):
         df = rename_fdcuk_cols(df)
         df = make_results_col(df)
         df = lowercase_team_names(df)
+        df = drop_duplicate_rows(df)
+        df = drop_awarded(df)
         clean_dfs.append(df)
     return clean_dfs
 

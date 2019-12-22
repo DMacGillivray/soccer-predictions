@@ -21,6 +21,7 @@ def get_std_dict_from_df(df, std_dict_top_dir):
     league = df['league'].unique()[0]
     fn = league + '.pkl'
     fp = std_dict_top_dir / nation / league / fn
+    # std_dict_dir = std_dict_top_dir / nation / league
 
     try:
         with open(fp, 'rb') as handle:
@@ -28,6 +29,12 @@ def get_std_dict_from_df(df, std_dict_top_dir):
         return std_dict
     except IOError:
         return {'key': 'value'}
+    # try:
+    #     if fp.exists():
+    #         std_dict = load_pickle(std_dict_dir)
+    #         return std_dict
+    # except IOError:
+    #     return {'key': 'value'}
 
 
 def standardize_team_names(df_orig, std_names_dict):
