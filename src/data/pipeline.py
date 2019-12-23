@@ -37,7 +37,7 @@ def run_pipeline():
     # scope_whoscored_heatmap_images()
     # scope_whoscored_shotmap_images()
     # clean_football_data_co_uk()
-    # clean_indatabet_com()
+    clean_indatabet_com()
     # clean_whoscored_heatmap_images()
     # clean_whoscored_shotmap_images()
     # standardize_df_team_names()
@@ -45,9 +45,9 @@ def run_pipeline():
     # join_dfs_within_seasons()
     # join_images_within_seasons()
     # stackseasons()
-    apply_ts_features()
-    run_transform_ts_to_supervised()
-    transformed_to_all_stacked()
+    # apply_ts_features()
+    # run_transform_ts_to_supervised()
+    # transformed_to_all_stacked()
 
 
 if __name__ == "__main__":

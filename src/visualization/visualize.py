@@ -9,6 +9,14 @@ import pandas as pd
 import numpy as np
 
 
+def extend_cols(additional_cols, include_target_cols=True):
+    cols = ['nation', 'league', 'season', 'date', 'h', 'a']
+    target_cols = ['h_ftGoals', 'a_ftGoals', 'h_shots', 'a_shots', 'h_shotsOnTarget', 'a_shotsOnTarget', 'result']
+    if include_target_cols:
+        cols.extend(target_cols)
+    cols.extend(additional_cols)
+    return cols
+
 
 def vstacked_bar_charts(x: Union[pd.Series, pd.Index], ys: List[pd.Series],
                         figsize: Tuple[int, int]=(10,8)) -> Tuple[ModuleType, Tuple[ModuleType, ...]]:
