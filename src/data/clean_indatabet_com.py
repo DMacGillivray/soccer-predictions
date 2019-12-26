@@ -14,8 +14,6 @@ from src.data.pfuncs import (get_filepaths,
                              write_dfs_to_filepaths,
                              drop_duplicate_rows) # noqa E402
 
-PROJECT_DIR = pathlib.Path().cwd().resolve()
-
 SCOPED_DIR = PROJECT_DIR / 'data' / '02-scoped'
 CLEANED_DIR = PROJECT_DIR / 'data' / '03-cleaned'
 

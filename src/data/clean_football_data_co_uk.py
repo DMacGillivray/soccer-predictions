@@ -1,19 +1,21 @@
 import pathlib
+import sys
 
 import pandas as pd
 
-from pfuncs import (get_filepaths,
-                    read_csvs_to_dfs,
-                    make_filepaths_from_dfs,
-                    drop_unnamed,
-                    drop_all_nulls,
-                    make_results_col,
-                    lowercase_team_names,
-                    write_dfs_to_filepaths,
-                    drop_ha_nulls,
-                    drop_duplicate_rows)
+PROJECT_DIR = pathlib.Path.cwd().resolve()
+sys.path.append(str(PROJECT_DIR))
 
-PROJECT_DIR = pathlib.Path().cwd().resolve()
+from src.data.pfuncs import (get_filepaths,
+                             read_csvs_to_dfs,
+                             make_filepaths_from_dfs,
+                             drop_unnamed,
+                             drop_all_nulls,
+                             make_results_col,
+                             lowercase_team_names,
+                             write_dfs_to_filepaths,
+                             drop_ha_nulls,
+                             drop_duplicate_rows) # noqa E402
 
 SCOPED_DIR = PROJECT_DIR / 'data' / '02-scoped'
 CLEANED_DIR = PROJECT_DIR / 'data' / '03-cleaned'

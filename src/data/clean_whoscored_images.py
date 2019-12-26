@@ -1,10 +1,13 @@
 import pathlib
+import sys
+
+PROJECT_DIR = pathlib.Path.cwd().resolve()
+sys.path.append(str(PROJECT_DIR))
 
 from pfuncs import (get_filepaths,
                     make_equiv_image_dest_fps,
-                    copy_files)
+                    copy_files) # noqa E402
 
-PROJECT_DIR = pathlib.Path().cwd().resolve()
 SCOPED_DIR = PROJECT_DIR / 'data' / '02-scoped'
 CLEANED_DIR = PROJECT_DIR / 'data' / '03-cleaned'
 

@@ -1,11 +1,15 @@
 # -*- coding: utf-8 -*-
 import pathlib
+import sys
 
 import pandas as pd
 
-from pfuncs import (get_filepaths,
-                    read_csvs_to_dfs,
-                    write_dfs_to_filepaths)
+PROJECT_DIR = pathlib.Path().cwd().resolve()
+sys.path.append(str(PROJECT_DIR))
+
+from src.data.pfuncs import (get_filepaths,
+                             read_csvs_to_dfs,
+                             write_dfs_to_filepaths) # noqa E402
 
 PROJECT_DIR = pathlib.Path().cwd().resolve()
 TRANSFORMED_DIR = PROJECT_DIR / 'data' / '08-transformed'

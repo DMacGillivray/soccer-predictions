@@ -1,15 +1,17 @@
 # -*- coding: utf-8 -*-
+import pathlib
+import sys
+
 import numpy as np
 import pandas as pd
-import pathlib
-
-from pfuncs import (get_filepaths,
-                    read_csvs_to_dfs,
-                    write_dfs_to_filepaths,
-                    make_equiv_image_dest_fps)
 
 PROJECT_DIR = pathlib.Path().cwd().resolve()
+sys.path.append(str(PROJECT_DIR))
 
+from src.data.pfuncs import (get_filepaths,
+                             read_csvs_to_dfs,
+                             write_dfs_to_filepaths,
+                             make_equiv_image_dest_fps) # noqa E402
 
 FEATURED_DIR = PROJECT_DIR / 'data' / '07-time-series-featured'
 TRANSFORMED_DIR = PROJECT_DIR / 'data' / '08-transformed'
