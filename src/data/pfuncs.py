@@ -5,6 +5,18 @@ import pandas as pd
 import numpy as np
 
 
+def drop_cols_with_duplicate_values(df_orig):
+    df = df_orig.copy(deep=True)
+    dups = []
+    for i in range(0, len(df.columns)):
+        col1 = df.columns[i]
+        for col2 in df.columns[i + 1:]:
+            if df[col1].equals(df[col2]):
+                dups.append(col2)
+    df.drop(columns=dups, inplace=True)
+    return df
+
+
 def get_nations(filepaths):
     nations = list(np.unique([str(fp).split('/')[-4] for fp in filepaths]))
     return nations

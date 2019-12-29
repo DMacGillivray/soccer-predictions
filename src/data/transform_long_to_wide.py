@@ -91,6 +91,36 @@ def form_feature_records(df, feature='ftGoals'):
     return season_feature_df
 
 
+def get_all_feature_cols(df):
+    return [col for col in df.columns if '-' in col]
+
+
+def get_feature_name_stubs(df):
+    return sorted(list(set([col.split('-')[0]
+                            for col in df.columns if '-' in col])))
+
+
+def clean_up_league_df(df_orig):
+    df = df_orig.copy(deep=True)
+    first_cols = ['nation', 'league', 'season', 'h', 'a', 'date',
+                  'h_ftGoals', 'a_ftGoals', 'result']
+    all_feature_cols = get_all_feature_cols(df)
+    other_cols = [col for col in df.columns
+                  if col not in first_cols and col not in all_feature_cols]
+
+    feature_name_stubs = get_feature_name_stubs(df)
+    ordered_feature_cols = []
+    for feature_name_stub in feature_name_stubs:
+        unsorted_feature_list = [col for col in df.columns
+                                 if feature_name_stub == col.rsplit('-', 1)[0]]
+        unsorted_feature_list.sort(key=lambda x: int(x.rsplit('-', 1)[1]))
+        ordered_feature_cols.extend(unsorted_feature_list)
+
+    cols = first_cols + other_cols + ordered_feature_cols
+    df = df[cols]
+    return df
+
+
 def transform_ts_to_supervised(df, features):
     features = np.unique([col[2:] for col in df.columns
                           if col.startswith('h_')])
@@ -140,6 +170,7 @@ def run_transform_ts_to_supervised():
             season_df_t = transform_ts_to_supervised(season_df, features)
             season_dfs.append(season_df_t)
         league_df = pd.concat(season_dfs, sort=True, axis=0)
+        league_df = clean_up_league_df(league_df)
         df_tss.append(league_df)
     transformed_filepaths = make_equiv_image_dest_fps(FEATURED_DIR,
                                                       TRANSFORMED_DIR,
