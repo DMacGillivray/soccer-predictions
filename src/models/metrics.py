@@ -36,7 +36,7 @@ def calc_EVs(df_orig):
     return df
 
 
-def selct_bets(df_orig, threshold=0.1):
+def select_bets(df_orig, threshold=0.1):
     df = df_orig.copy(deep=True)
     df[['hwin_bet', 'draw_bet', 'awin_bet']] = \
         df[['hwin_unit_EV', 'draw_unit_EV', 'awin_unit_EV']] >= threshold

@@ -57,7 +57,7 @@ class PoissonRegression(BaseEstimator, ClassifierMixin):
                              columns={'h': 'team', 'a': 'opponent', 'h_ftGoals': 'goals'}),
                              self.X_[['a', 'h', 'a_ftGoals']].assign(home=0).rename(
                              columns={'a': 'team', 'h': 'opponent', 'a_ftGoals': 'goals'})])
-
+        # print(self.reshaped_X_.head())
         # fit the model - have to handle perfect separation or not enough data
         # If exception - catch and the the model to None
         # If we see  None model in predict, we can return 0 probabilities
@@ -122,7 +122,6 @@ class PoissonRegression(BaseEstimator, ClassifierMixin):
         crit1 = self.probas.sum(axis=1) < 1.0 - self.epsilon
         crit2 = self.probas.sum(axis=1) > 1.0 + self.epsilon
         self.probas[crit1 | crit2] = np.NaN
-
         # Set the index of the returned probabilities to match the input data
         self.probas.index = X.index
 
@@ -130,6 +129,7 @@ class PoissonRegression(BaseEstimator, ClassifierMixin):
 
     def predict_proba(self, X):
         self.predict(X)
+
         rename_dict = {'poiss_p(hwin)': 'h_poissWin',
                        'poiss_p(draw)': 'h_poissDraw',
                        'poiss_p(awin)': 'h_poissLose'}

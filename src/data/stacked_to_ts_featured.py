@@ -29,9 +29,10 @@ def clean_df(df_orig):
     """
     df = df_orig.copy(deep=True)
     first_cols = ['nation', 'league', 'season', 'h', 'a', 'date',
-                  'h_ftGoals', 'a_ftGoals', 'result',
-                  'seasonPercentile', 'implied_hwin',
-                  'implied_draw', 'implied_awin']
+                  'h_ftGoals', 'a_ftGoals', 'result']
+    implied_cols = [col for col in df.columns if 'implied' in col]
+    sp_cols = [col for col in df.columns if 'seasonPercentile' in col]
+    enc_cols = [col for col in df.columns if 'ordinal' in col]
     h_feature_cols = sorted([col for col in df.columns if col[0:2] == 'h_'])
     a_feature_cols = sorted([col for col in df.columns if col[0:2] == 'a_'])
     full_odds_cols = sorted([col for col in df.columns if 'Odds' in col
@@ -46,15 +47,19 @@ def clean_df(df_orig):
                                     errors='coerce',
                                     downcast='float')
 
-    df_readable = pd.concat([df[first_cols], df_h, df_a, df[full_odds_cols]],
+    df_readable = pd.concat([df[first_cols], df[implied_cols],
+                             df[enc_cols],
+                             df[sp_cols], df_h, df_a, df[full_odds_cols]],
                             sort=False, axis=1)
+
     dropper_cols = [col for col in df_readable.columns if '2.5Odds' in col or
                     'asian' in col]
     df_readable.drop(columns=dropper_cols, inplace=True)
-    list1 = ['hwinOddsBet365', 'drawOddsBet365', 'awinOddsBet365']
-    if set(list1) <= set(df_readable.columns):
-        mapping_dict = {col: col[0:8] for col in list1}
-        df_readable.rename(columns=mapping_dict, inplace=True)
+
+    # list1 = ['hwinOddsBet365', 'drawOddsBet365', 'awinOddsBet365']
+    # if set(list1) <= set(df_readable.columns):
+    #     mapping_dict = {col: col[0:8] for col in list1}
+    #     df_readable.rename(columns=mapping_dict, inplace=True)
 
     if 'h_htgoals' in df_readable.columns:
         df_readable.drop(columns=['h_htgoals'], inplace=True)
@@ -113,9 +118,11 @@ def run_poisson_regression(df_orig):
         clf = PoissonRegression()
         clf.fit(df.loc[train_indices], df.loc[train_indices, 'result'])
         preds = clf.predict_proba(df.loc[predict_indices])
+        # print(preds.head())
         for i, col in enumerate(preds.columns):
-            df.loc[preds.index, preds.columns[i]] = \
+            df.loc[predict_indices, preds.columns[i]] = \
                 preds[preds.columns[i]].values
+            # df.loc[preds.columns[i]] = preds[preds.columns[i]].values
     return df
 
 
@@ -127,6 +134,11 @@ def insert_implied_probabilities(df_orig):
     home win, draw, away win
     """
     df = df_orig.copy(deep=True)
+    list1 = ['hwinOddsBet365', 'drawOddsBet365', 'awinOddsBet365']
+    if set(list1) <= set(df.columns):
+        mapping_dict = {col: col[0:8] for col in list1}
+        df.rename(columns=mapping_dict, inplace=True)
+
     odds_cols = ['hwinOdds', 'drawOdds', 'awinOdds']
     if odds_cols[0] in df.columns:
         tot = 1/df[odds_cols[0]] + 1/df[odds_cols[1]] + 1/df[odds_cols[2]]
@@ -136,6 +148,12 @@ def insert_implied_probabilities(df_orig):
         df['implied_hwin'] = hwin
         df['implied_draw'] = draw
         df['implied_awin'] = awin
+        df['h_impliedWin'] = hwin
+        df['h_impliedDraw'] = draw
+        df['h_impliedLose'] = awin
+        df['a_impliedWin'] = awin
+        df['a_impliedDraw'] = draw
+        df['a_impliedLose'] = hwin
     return df
 
 
@@ -151,6 +169,7 @@ def apply_features(dfs):
             # print(season_df['season'].unique())
             # print(sorted(df['h'].unique()))
             # print(sorted(df['a'].unique()))
+            # season_df = clean_df(season_df)
             season_df = insert_game_day(season_df)
             season_df = insert_seasonPercentile(season_df)
             season_df = insert_implied_probabilities(season_df)
@@ -158,12 +177,9 @@ def apply_features(dfs):
             season_df = one_hot_encoded_result(season_df)
             season_df = run_poisson_regression(season_df)
             season_dfs.append(season_df)
-            # break
-        # common_cols = list(set.intersection(*(set(df.columns)
-        #                    for df in season_dfs)))
-        # featured_df = pd.concat([df[common_cols] for df in season_dfs], axis=0)
         list_of_dicts = [cur_df.T.to_dict().values() for cur_df in season_dfs]
         featured_df = pd.DataFrame(list(chain(*list_of_dicts)))
+        # featured_df = insert_implied_probabilities(featured_df)
         featured_df = clean_df(featured_df)
         featured_df = drop_artefact_cols(featured_df)
         featured_dfs.append(featured_df)

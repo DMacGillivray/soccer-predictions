@@ -26,9 +26,15 @@ def select_features(df_orig, feature_name_stubs):
     return df[return_cols]
 
 
-def get_feature_name_stubs(df, feature_names):
-    return list(set([col.rsplit('-', 1)[0] for col in df.columns
-                     if 'ftGoals' in col and '-' in col]))
+def get_feature_name_stubs_from_base(df, feature_names):
+    feature_name_stubs = []
+    for feature_name in feature_names:
+        feature_name_stubs.extend(list(set([col.rsplit('-', 1)[0] for col
+                                            in df.columns
+                                            if feature_name ==
+                                            col.rsplit('-', 1)[0][4:]
+                                            and '-' in col])))
+    return feature_name_stubs
 
 
 def get_base_features(df):
@@ -48,3 +54,24 @@ def get_df_from_base_features(df_orig, base_features):
         feature_col_sets.extend(feature_col_set)
     ret_cols = other_cols + feature_col_sets
     return df[ret_cols]
+
+
+def get_features_df(df_orig):
+    df = df_orig.copy(deep=True)
+    feature_cols = [col for col in df.columns if '-' in col]
+    return df[feature_cols]
+
+
+def get_non_features_df(df_orig):
+    df = df_orig.copy(deep=True)
+    non_feature_cols = [col for col in df.columns if '-' not in col]
+    return df[non_feature_cols]
+
+
+def get_target_df(df_orig, format='single_ordinal_result_column'):
+    df = df_orig.copy(deep=True)
+    if format == 'single_ordinal_result_column':
+        return df['ordinal_result']
+    if format == 'ordinal_result_columns':
+        return df[['ordinal_result_1', 'ordinal_result_2', 'ordinal_result_3']]
+    # Kera style goes here in future
