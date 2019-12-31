@@ -135,9 +135,9 @@ def transform_ts_to_supervised(df, features):
     all_dfs.append(season_all_features)
     mega_df = pd.concat(all_dfs, axis=0)
     # Drop features with a zero at the back
-    dropper_cols = [col for col in mega_df.columns
-                    if '-' in col and int(col.rsplit('-', 1)[1]) == 0]
-    mega_df.drop(columns=dropper_cols, inplace=True)
+    # dropper_cols = [col for col in mega_df.columns
+    #                 if '-' in col and int(col.rsplit('-', 1)[1]) == 0]
+    # mega_df.drop(columns=dropper_cols, inplace=True)
     # Drop duplicate columns
     mega_df = mega_df.loc[:, ~mega_df.columns.duplicated()]
     return mega_df

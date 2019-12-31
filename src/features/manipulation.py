@@ -3,9 +3,18 @@ def cut_historical_games(df_orig, n_back, drop_all_nan_rows=True, how='all'):
     df = df_orig.copy(deep=True)
     feature_cols = [col for col in df.columns if '-' in col]
     non_feature_cols = [col for col in df.columns if col not in feature_cols]
-    cut_feature_cols = [col for col in feature_cols
-                        if int(col.rsplit('-')[1]) <= n_back]
-    return_cols = non_feature_cols + cut_feature_cols
+    pre_game_feature_cols = [col for col in df.columns
+                             if '-' in col and
+                             ('poiss' in col or 'implied' in col)]
+    cut_pre_game_feature_cols = [col for col in pre_game_feature_cols
+                                 if int(col.rsplit('-')[1]) <= n_back]
+    sub_feature_cols = [col for col in feature_cols
+                        if 'poiss' not in col or 'implied' not in col]
+    cut_feature_cols = [col for col in sub_feature_cols
+                        if int(col.rsplit('-')[1]) <= n_back
+                        and int(col.rsplit('-')[1]) > 0]
+    return_cols = non_feature_cols + cut_pre_game_feature_cols\
+        + cut_feature_cols
     df = df[return_cols]
     if drop_all_nan_rows:
         df.dropna(subset=cut_feature_cols, axis=0, inplace=True, how=how)
@@ -74,4 +83,3 @@ def get_target_df(df_orig, format='single_ordinal_result_column'):
         return df['ordinal_result']
     if format == 'ordinal_result_columns':
         return df[['ordinal_result_1', 'ordinal_result_2', 'ordinal_result_3']]
-    # Kera style goes here in future
