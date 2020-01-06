@@ -18,6 +18,7 @@ def cut_historical_games(df_orig, n_back, drop_all_nan_rows=True, how='all'):
     df = df[return_cols]
     if drop_all_nan_rows:
         df.dropna(subset=cut_feature_cols, axis=0, inplace=True, how=how)
+    df = df.loc[:, ~df.columns.duplicated()]
     df.reset_index(drop=True, inplace=True)
     return df
 

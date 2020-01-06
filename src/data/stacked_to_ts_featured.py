@@ -31,7 +31,12 @@ def clean_df(df_orig):
     first_cols = ['nation', 'league', 'season', 'h', 'a', 'date',
                   'h_ftGoals', 'a_ftGoals', 'result']
     implied_cols = [col for col in df.columns if 'implied' in col]
-    sp_cols = [col for col in df.columns if 'seasonPercentile' in col]
+    # sp_cols = [col for col in df.columns if 'seasonPercentile' in col]
+    # w_cols = [col for col in df.columns if 'weight' in col]
+    others = ['seasonPercentile', 'weight', 'base_hwin_prob',
+              'base_draw_prob', 'base_awin_prob']
+    other_cols = [col for col in df.columns if col in others]
+
     enc_cols = [col for col in df.columns if 'ordinal' in col]
     h_feature_cols = sorted([col for col in df.columns if col[0:2] == 'h_'])
     a_feature_cols = sorted([col for col in df.columns if col[0:2] == 'a_'])
@@ -48,8 +53,9 @@ def clean_df(df_orig):
                                     downcast='float')
 
     df_readable = pd.concat([df[first_cols], df[implied_cols],
-                             df[enc_cols],
-                             df[sp_cols], df_h, df_a, df[full_odds_cols]],
+                             df[enc_cols], df[other_cols],
+                             df_h, df_a,
+                             df[full_odds_cols]],
                             sort=False, axis=1)
 
     dropper_cols = [col for col in df_readable.columns if '2.5Odds' in col or
@@ -84,6 +90,21 @@ def insert_game_day(df_orig):
 def insert_seasonPercentile(df_orig):
     df = df_orig.copy(deep=True)
     df['seasonPercentile'] = df['game_day'].rank(method='max', pct=True)
+    return df
+
+
+def insert_class_weight_vector(df_orig):
+    # https://stackoverflow.com/questions/49534974/
+    # difference-between-the-weight-parameter-in-xgb-dmatrix
+    # -and-scale-pos-weight-in-h
+    # Not sure if this is a valid way of handling imbalance
+    # Leaving in for now - Review later
+    # 45, 27.5, 27.5 are rough estimates (within +/- 5%)
+    # based on premier league data
+    df = df_orig.copy(deep=True)
+    weights = [0.275/0.45, 0.275/0.275, 0.275/0.275]
+    weights_map = {'hwin': weights[0], 'draw': weights[1], 'awin': weights[2]}
+    df['weight'] = df['result'].map(weights_map)
     return df
 
 
@@ -157,6 +178,14 @@ def insert_implied_probabilities(df_orig):
     return df
 
 
+def insert_base_probabilities(df_orig):
+    df = df_orig.copy(deep=True)
+    df['base_hwin_prob'] = 0.45
+    df['base_draw_prob'] = 0.275
+    df['base_awin_prob'] = 0.275
+    return df
+
+
 def apply_features(dfs):
     featured_dfs = []
     for df in dfs:
@@ -176,6 +205,8 @@ def apply_features(dfs):
             season_df = encode_result(season_df)
             season_df = one_hot_encoded_result(season_df)
             season_df = run_poisson_regression(season_df)
+            season_df = insert_class_weight_vector(season_df)
+            season_df = insert_base_probabilities(season_df)
             season_dfs.append(season_df)
         list_of_dicts = [cur_df.T.to_dict().values() for cur_df in season_dfs]
         featured_df = pd.DataFrame(list(chain(*list_of_dicts)))
