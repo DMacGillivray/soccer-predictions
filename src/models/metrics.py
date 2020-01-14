@@ -62,3 +62,27 @@ def simulate_betting(df_orig):
     df['awin_rets'] = np.select(conditions3, choices3, default=0)
     df['game_ret'] = df[['hwin_rets', 'draw_rets', 'awin_rets']].sum(axis=1)
     return df
+
+
+def insert_rps(df_orig, prob_cols=[1, 2, 3], return_col_prefix='model'):
+    """
+    Accepts a DataFram containing the following 6 columns
+    ordinal_result_1, ordinal_result_2, ordinal_result_3
+    and corresponding columns named 1, 2, and 3
+    ordinal result columns are binary columns
+    1, 2, 3 columns contain probailities
+    1 represents Home Win
+    2 represents Draw
+    3 represents Away Win
+    Calculates an Rank Probability Score for each instance, inserts these
+    into a column named "rps"
+    Returns the new DataFrame
+    """
+    df = df_orig.copy(deep=True)
+    obs_df = df[['ordinal_result_1', 'ordinal_result_2', 'ordinal_result_3']]
+    pred_df = df[prob_cols]
+    pred_cdf = pred_df.cumsum(axis=1).values
+    obs_cdf = obs_df.cumsum(axis=1).values
+    df[return_col_prefix + '_rps'] = np.sum(1/(pred_df.shape[1]-1) *
+                                            (pred_cdf - obs_cdf)**2, 1)
+    return df

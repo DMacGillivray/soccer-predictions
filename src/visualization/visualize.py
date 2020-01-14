@@ -8,6 +8,9 @@ from types import ModuleType
 import pandas as pd
 import numpy as np
 
+from sklearn.calibration import calibration_curve
+from netcal.metrics import ACE, ECE, MCE 
+
 
 def extend_cols(additional_cols, include_target_cols=True):
     cols = ['nation', 'league', 'season', 'date', 'h', 'a']
@@ -195,3 +198,87 @@ def plot_match_probas(home_probas: pd.Series, away_probas: pd.Series, goal_lim=6
     ax_marg_x.set_ylabel('Probability')
     plt.tight_layout()
     return fig, (fig.axes) 
+
+
+def get_model_diagnosis(df, strategy='quantile', rps_col_prefix='model', add_baseline=False):
+    """
+    Diagnosis Plots:
+    Accepts a DataFrame containing columns:
+    ordinal_result_1
+    ordinsl_result_2
+    ordinal_result_3
+    1
+    2
+    3
+    The columns are paired as follows:
+    "ordinal_result_1" represents a binary column defining
+    whether a home win event occurred, and
+    column named "1" contains the corresponding model probabilities
+    Same for ordinal_result_2, and 2 and
+    ordinal_result_3 and 3
+    strategy{‘uniform’, ‘quantile’}, (default=’uniform’)
+    Strategy used to define the widths of the bins.
+      uniform
+        All bins have identical widths.
+      quantile
+        All bins have the same number of points.
+    RPS Plots:
+    Accepts a DataFrame containing columns:
+    ordinal_result
+    "rps_col_prefix"_rps
+    and optional columns named
+    rps_baseline_1
+    2
+    3
+    The columns are paired as follows:
+    "ordinal_result_1" represents a binary column defining
+    whether a home win event occurred, and
+    column named "1" contains the corresponding model probabilities
+    Same for ordinal_result_2, and 2 and
+    ordinal_result_3 and 3
+    """
+    fig, axes = plt.subplots(nrows=3, ncols=2, figsize=(12,10))
+    ax1, ax2, ax3 = axes[:, 0]
+    n_bins = 10
+    mapper = {1: 'Home Win', 2: 'Draw', 3: 'Away Win'}
+    for col, ax in zip([1,2,3], (ax1, ax2, ax3)):
+        fop, mpv = calibration_curve(df['ordinal_result_' + str(col)],
+                                     df[col],
+                                     n_bins=n_bins,
+                                     strategy=strategy)
+        # plot perfectly calibrated
+        ax.plot([0, 1], [0, 1], linestyle='--')
+        # plot model reliability
+        ax.plot(mpv, fop, marker='.')
+        ax.set_title(mapper[col])
+
+    ax4, ax5, ax6 = axes[:, 1]
+    n_bins = 10
+    mapper = {1: 'Home Win RPS', 2: 'Draw RPS', 3: 'Away Win RPS'}
+    for col, ax in zip([1, 2, 3], (ax4, ax5, ax6)):
+        rpss = df[df['ordinal_result'] == col][rps_col_prefix + '_rps']
+        ax.hist(rpss, bins=n_bins)
+        ax.set_xlim(0, 1.0)
+        baseline_col_name = 'rps_baseline_' + str(col)
+        if add_baseline and baseline_col_name in df.columns:
+            ax.axvline(df['rps_baseline_1'].unique(), color='r')
+        median = rpss.median()
+        ax.axvline(median, color='r', linestyle='dashed', label=f'Median: {median:.3f}')
+        ax.set_title(mapper[col])
+        ax.legend()
+        ax.grid()
+
+    pred_arr, act_arr = df[[1, 2, 3]].values, df['ordinal_result'].values
+
+    ace = ACE(bins=n_bins)
+    ace_val = ace.measure(pred_arr, act_arr)
+
+    ece = ECE(bins=n_bins)
+    ece_val = ece.measure(pred_arr, act_arr)
+
+    mce = MCE(bins=n_bins)
+    mce_val = mce.measure(pred_arr, act_arr)
+
+    print(f'Average Calibration Error:  {ace_val:.3f}\nExpected Calibration Error: {ece_val:.3f}\nMaximum Calibration Error:  {mce_val:.3f}')
+    print(f"Number of Instances: {len(df)}")
+    return fig, (ax1, ax2, ax3, ax4, ax5, ax6)
