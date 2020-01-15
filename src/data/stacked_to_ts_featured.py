@@ -37,6 +37,16 @@ def clean_df(df_orig):
               'base_draw_prob', 'base_awin_prob']
     other_cols = [col for col in df.columns if col in others]
 
+    # Rename mean and max odds to more intuitive
+    if 'hwinOddsBbMax' in df.columns:
+        df.rename(columns={'hwinOddsBbMax': 'hwinOddsMax',
+                           'drawOddsBbMax': 'drawOddsMax',
+                           'awinOddsBbMax': 'awinOddsMax'}, inplace=True)
+    if 'hwinOddsBbMean' in df.columns:
+        df.rename(columns={'hwinOddsBbMean': 'hwinOddsMean',
+                           'drawOddsBbMean': 'drawOddsMean',
+                           'awinOddsBbMean': 'awinOddsMean'}, inplace=True)
+
     enc_cols = [col for col in df.columns if 'ordinal' in col]
     h_feature_cols = sorted([col for col in df.columns if col[0:2] == 'h_'])
     a_feature_cols = sorted([col for col in df.columns if col[0:2] == 'a_'])
