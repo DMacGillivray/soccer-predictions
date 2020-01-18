@@ -37,16 +37,17 @@ The scope will be for 3 of the top European Leagues
 Each league season is structured the same way. Every team plays every other team at home and away, and each game has one of four outcomes:
 
 + Home Team Wins
-+ draw
++ Draw
 + Away Team Wins
-+ Game is abandoned (or some other unique event occurs) - This is so rare that it will be neglected in this analysis
++ Game Abandoned (or some other unique event occurs) - This is so rare that it will be neglected in this analysis
 
 The web service will provide a list of upcoming games, along with the minimum odds required to make a profitable bet.
 
 So, if for example, on Saturday, there are 20 games being played across these 3 leagues, 60 minimum odds recommendations will be made - 3 for each game - An example is shown below:
 <p>
-    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/web-service-profitable-odds-table.png" width="1080" height="504" />
+    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/web-service-profitable-odds-table.png" width="807" height="136" />
 </p>
+
 ### 1.3 Customer Value
 
 The bettor will take these numbers and scan the Sports books for odds higher than these. For the service to be good, it needs to consistently find the minimum odds needed to enable a bettor to make profitable bets over the long run. Note that it may not always possible to find profitable odds at the Sportsbooks.
