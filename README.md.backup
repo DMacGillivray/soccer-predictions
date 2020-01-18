@@ -230,7 +230,7 @@ This effect is consistent from season to season as shown below
 The home-field advantage shows up in goals scored, as shown below:
 
 <p>
-    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/saved-images/eeda-multiple-seasons-home-and-away-goals-barplots.PNG" width="1008" height="576" />
+    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/saved-images/eda-multiple-seasons-home-and-away-goals-barplots.PNG" width="1008" height="576" />
 </p>
 
 Reviewing the chart above, we can see that the mean and variance are roughly equal for the count distributions. this point us in the direction of considering goals scored as a poisson distribution.
@@ -249,7 +249,7 @@ If we fit a poisson distribution to the data, we can use some diagnosis plots to
 Reviewing the odds data, we can see that the odds of a Home Win, and a Draw have a much lower maximum than the odds for an Away Win. The Away Win odds scale is much larger. This makes sense when we consider that the reciprocal of the odds can be interpreted as being close to a probability. If the probability of an Away Win is much less likely, then the odds increase.
 
 <p>
-    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/saved-images/eda-odds-bundesliga-multipl-bookies-multiple-seasons-histogramst.PNG" width="864" height="576" />
+    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/saved-images/eda-odds-bundesliga-multipl-bookies-multiple-seasons-histograms.PNG" width="864" height="576" />
 </p>
 
 TODO: redo with same shared x scale
@@ -308,16 +308,16 @@ Perfect calibration looks like this:
     <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/perfect-calibration-plot.png" width="372" height="266" />
 </p>
 
-*The above plot is taken from [Alon Daks web site](http://alondaks.com/me/) from the article [The Importance of Calibrating Your Deep Production Model](http://alondaks.com/2017/12/31/the-importance-of-calibrating-your-deep-model/)*
+*The above plot is taken from [Alon Daks web site](http://alondaks.com/me/) from the article[The Importance of Calibrating Your Deep Production Model](http://alondaks.com/2017/12/31/the-importance-of-calibrating-your-deep-model/)*
 
 
 #### 9.2 Expected Calibration Error
 
 
 <p>
-    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/saved-images/ECE-formula.png" width="559" height="108" />
+    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/ECE-formula.png" width="559" height="108" />
 </p>
-
+See [The Importance of Calibrating Your Deep Production Model](http://alondaks.com/2017/12/31/the-importance-of-calibrating-your-deep-model/) for details
 
 #### Maximum Calibration Error 
 
@@ -325,7 +325,7 @@ Perfect calibration looks like this:
     <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/MCE-formula.png" width="581" height="75" />
 </p>
 
-
+See [The Importance of Calibrating Your Deep Production Model](http://alondaks.com/2017/12/31/the-importance-of-calibrating-your-deep-model/) for details
 
 
 ### 9.2 Rank probability Score
