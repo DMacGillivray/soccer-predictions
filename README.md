@@ -10,7 +10,7 @@
 7. [Feature Selection](#7-feature-selection)
 8. [Modeling](#8-modeling)
 9. [Model Prediction and Review](#9-model-prediction-and-review)
-10. [Selecting the Best Model](#10-selecting the best-model)
+10. [Selecting the Best Model](#10-selecting-the best-model)
 11. [Test Data Results](#11-test-data-results)
 12. [Next Steps](#12-next-steps)
 13. [Conclusion](#13-conclusion)
@@ -34,22 +34,22 @@ The scope will be for 3 of the top European Leagues
 + German Bundesliga - 18 teams playing 306 games per season
 + Italian Serie A - 20 teams playing 380 games per season
 
-Each league season is structured tyhe same way. Every team plays every other team at home and away, and each game has one of four outcomes:
+Each league season is structured the same way. Every team plays every other team at home and away, and each game has one of four outcomes:
 
 + Home Team Wins
 + draw
 + Away Team Wins
-+ Game ios abandoned (or some other unique event occurs) - This is so rare taht it will be neglected in this analysis
++ Game is abandoned (or some other unique event occurs) - This is so rare that it will be neglected in this analysis
 
 The web service will provide a list of upcoming games, along with the minimum odds required to make a profitable bet.
 
 So, if for example, on Saturday, there are 20 games being played across these 3 leagues, 60 minimum odds recommendations will be made - 3 for each game - An example is shown below:
 <p>
-    <img src="notebooks/saved-images/web-service-profitable-odds-table.PNG" width="1080" height="504" />
+    <img src="notebooks/saved-images/web-service-profitable-odds-table.png" width="1080" height="504" />
 </p>
 ### 1.3 Customer Value
 
-The bettor will take these numbers and scan the Sportbooks for odds higher than these. For the service to be good, it needs to consistently find the minimum odds needed to enable a bettor to make profitable bets over the long run. Note that it may not always possible to find profitable odds at the Sportsbooks.
+The bettor will take these numbers and scan the Sports books for odds higher than these. For the service to be good, it needs to consistently find the minimum odds needed to enable a bettor to make profitable bets over the long run. Note that it may not always possible to find profitable odds at the Sportsbooks.
 
 So if I want to bet on Liverpool winning their 21 January game against Manchester United, I would find a Sportsbook giving decimal odds higher than 1.5, and place the bet.
 
