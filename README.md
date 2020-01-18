@@ -66,39 +66,45 @@ Identify break-even odds for the next set of soccer games to be played in the Pr
 
 ## 2. Data Science Objective
 
-Develop a model based on publicly available, free data that will identify break-even odds for the next set of soccer games to be played in the Premier League, Bundesliga, and Serie A
+Develop a model based on free & publicly available data that will identify break-even odds for the next set of soccer games to be played in the Premier League, Bundesliga, and Serie A
 
-## 3. Understanding the Machine Learning Objective
+## 3. Understanding the Data Science Objective
 
 ### 3.1 Randomness in Soccer Games
 
-There is a significant degree of [randomness involved in soccer games](https://www.nytimes.com/2014/07/08/science/soccer-a-beautiful-game-of-chance.html). We can never really know with 100% confidence what the final score will be. This is very different to a standard classification problem - say classifying images of cats and dogs. For cats and dogs there is a solid ground truth for the class. A cat is a cat with 100% certainty. This can be determined before we run the image through the model. A random event is different, we can never get to the point where we are predicting a single outcome with 100% certainty, because the outcome itself is uncertain. We can never get to the point where we say … 
+There is a significant degree of [randomness involved in soccer games](https://www.nytimes.com/2014/07/08/science/soccer-a-beautiful-game-of-chance.html). We can never really know with 100% confidence what the final score will be. This is very different to a standard classification problem - say classifying images of cats and dogs. For cats and dogs there is a solid ground truth for the class. A cat is a cat with 100% certainty. A random outcome, like a Soccer game result is different; We can never get to the point where we are predicting a single outcome with 100% certainty, because the outcome itself is uncertain.
 
-However, if we do a thought experiment and imagine that a football game between the same 2 teams was played 100 times, we could reasonably assume that we would not get the same final score for all 100 games. In fact it could be argued that the inherent randomness in the game is what makes it so exciting, and hence so popular.
+I propose that if we do a thought experiment and imagine that a football game between the same 2 teams was played 100 times, we could reasonably assume that we would not get the same final score for all 100 games. In fact it could be argued that the inherent randomness in the game is what makes it so exciting, and hence so popular.
 
-Because of the probabilistic nature of the outcome, we need to carefully consider the types of models we use to classify game outcomes. Our objective is not accurate classification, but accurate probabilities.
+Because of the probabilistic nature of the outcome, we need to carefully consider the types of models we use to classify game outcomes. **Our objective is not accurate classification, but accurate probabilities.**
 
 ### 3.2 What Makes a Profitable Bet?
 
-We can think of a football game like this. If this game were played a million times, how would the possible outcomes be proportioned? If we could do this, imagine the home team won 320,000 times, there was a draw 270,000 times, and an away win 410,000 times?
+We can think of a football game like this. If the same game were played a million times, how would the possible outcomes be proportioned?
+
+Let us assume we simulated 1,000,000 games, and imagine the home team won 320,000 times, there was a draw 270,000 times, and the away team won 410,000 times
+
 With this (imaginary) data we would be able to say the probability distribution for the game results would be as follows:
 
 Home Win                 |	Draw     | Away Win
 :------------------------:|:--------------:|:------------:
 0.32                   |	0.27    | 0.41
 
-The next component to the bet is the odds
-Let’s say we go to 3 Sports Books and find the following odds for home wins – How do we know which bets are profitable?
+The next component to the bet is the odds.
+
+If we go to 2 Sports Books and find the following odds for home wins – How do we know which bets are profitable?
 
 Odds # 1                 |	Odds # 2
 :------------------------:|:--------------:
 2.92                   |	3.30
 
-We call the amount we will place on the bet the stake
+
  
 We can calculate the Expected Value of the bet, to see which odds are favourable
 
 Expected Value (EV) is the probability of winning the bet multiplied by the potential winnings minus the probability of losing the bet multiplied by our potential loss.
+
+In the following calculations we will call the amount we will place on the bet the stake, and assume it equals 1 unit. We now have all the elements needed to make an Expected Value calculation.
 
 + probability of winning: 0.32
 + probability of losing: 1 - probability of winning, or 1 - 0.32 = 0.68
@@ -107,28 +113,92 @@ Expected Value (EV) is the probability of winning the bet multiplied by the pote
 
 <a href="https://www.codecogs.com/eqnedit.php?latex=EV&space;=&space;(probability\;of\;winning\;bet&space;\times&space;(odds&space;-&space;stake)))&space;-&space;(probability\;of\;losing\;bet&space;\times&space;-&space;stake))" target="_blank"><img src="https://latex.codecogs.com/gif.latex?EV&space;=&space;(probability\;of\;winning\;bet&space;\times&space;(odds&space;-&space;stake)))&space;-&space;(probability\;of\;losing\;bet&space;\times&space;-&space;stake))" title="EV = (probability\;of\;winning\;bet \times (odds - stake))) - (probability\;of\;losing\;bet \times - stake))" /></a>
 
-If we apply this formula to our odds, and use a unit stake, we get:
+If we apply this formula to our different odds, and use a unit stake, we get:
 
 + Odds # 1:
 
  <a href="https://www.codecogs.com/eqnedit.php?latex=EV&space;=&space;(0.32&space;\times&space;(2.92\;&space;-\;&space;1))\;&space;&plus;\;&space;((1-0.32)&space;\times&space;-&space;1)&space;=&space;-0.0656" target="_blank"><img src="https://latex.codecogs.com/gif.latex?EV&space;=&space;(0.32&space;\times&space;(2.92\;&space;-\;&space;1))\;&space;&plus;\;&space;((1-0.32)&space;\times&space;-&space;1)&space;=&space;-0.0656" title="EV = (0.32 \times (2.92\; -\; 1))\; +\; ((1-0.32) \times - 1) = -0.0656" /></a>
 + Odds # 2:
 
- <a href="https://www.codecogs.com/eqnedit.php?latex=EV&space;=&space;(0.32&space;\times&space;(3.30\;&space;-\;&space;1))\;&space;&plus;\;&space;((1-0.32)&space;\times&space;-&space;1)&space;=&space;0.056" target="_blank"><img src="https://latex.codecogs.com/gif.latex?EV&space;=&space;(0.32&space;\times&space;(3.30\;&space;-\;&space;1))\;&space;&plus;\;&space;((1-0.32)&space;\times&space;-&space;1)&space;=&space;0.056" title="EV = (0.32 \times (3.30\; -\; 1))\; +\; ((1-0.32) \times - 1) = 0.056" /></a>
+ <a href="https://www.codecogs.com/eqnedit.php?latex=EV&space;=&space;(0.32&space;\times&space;(3.30\;&space;-\;&space;1))\;&space;&plus;\;&space;((1-0.32)&space;\times&space;-&space;1)&space;=&space;0.056" target="_blank"><img src="https://latex.codecogs.com/gif.latex?EV&space;=&space;(0.32&space;\times&space;(3.30\;&space;-\;&space;1))\;&space;&plus;\;&space;((1-0.32)&space;\times&space;-&space;1)&space;=&space;0.056" title="EV = (0.32 \times (3.30\; -\; 1))\; +\; ((1-0.32) \times - 1) = +0.056" /></a>
 
-So, If we can get Odds #2, we have a positive Expected Value bet, and assuming we are confident of our probability prediction, we should place the bet. Alternatively, if we can only get Odds #1, we have a negative Expected value, and we should avoid the bet.
+So, If we can get Odds #2, we have a positive EV bet, and if we trust our probability prediction, we should place the bet. Alternatively, if we can only get Odds #1, we have a negative EV, and we should avoid the bet.
 
-Clearly, even with positive EV, we may lose this particular bet. We recognize we have a 68% probability of losing the bet. However, over the long run, if we are correctly identifying, and placing, positive EV bets, we will make money.
+Clearly, even with positive EV, we may lose this particular bet. In fact, we recognize we have only a 32% probability of winning the bet, which means we have a much higher - 68% - probability of losing the bet. However, over the long run, if we are correctly identifying, and placing, positive EV bets, we will make money.
 
 The counter-intuitive implication of using EV, is that if we find 2 positive EV bets on the same game - say Home Win, and Draw, then in theory we should place both bets! We will deal with this issue later.
 
 
 
-### 3.3 Expected Value
+### 3.3 Implied Probability and the Overround
 
-### 3.2 Expected value of a Bet
+The Sports Book will produces a set of odds for a game that looks like this:
+
+Home Win                 |	Draw     | Away Win
+:------------------------:|:--------------:|:------------:
+2.92                   |	3.52    | 2.3
+
+These odds can be converted to "probabilities" - We just need to divide the odds into 1.
+
+Home Win                 |	Draw     | Away Win
+:------------------------:|:--------------:|:------------:
+2.92                   |	3.52    | 2.3
+0.342                   |	0.284    | 0.435
+
+However, looking at these numbers, it is clear that they are not real probabilities. The problem is when we add them together, they sum to 1.061. We know that these 3 outcomes are the only possible outcomes, so "real" probabilities should sum to exactly 1. What explains this discrepancy?
+
+This is where the Sports Book makes money, and is known as the [overround or the "vig"](https://en.wikipedia.org/wiki/Mathematics_of_bookmaking#Making_a_'book'_(and_the_notion_of_overround))
+
+However, we can normalize these 3 numbers back to implied probabilities by dividing by the sum
+
+The table below shows Expected Value calculations on some typical odds 
+
+<p>
+    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/odds-to-EV-calculation-table.png" width="599" height="317" />
+</p>
+
+
 
 ## 4. Data Sources and Description
+
+
+### 4.1 www.football-data-co-uk
+
+This site contains a vast amount of archived data for multiple football leagues. Crucially, it also contains Odds Data
+
+Typical Data
+
++ Nation, League, Season
++ Date, Home Team, Away Team
++ Full Time Home Team Goals, Full Time Away Team Goals
++ For each team:
+	+ Corners
+	+ Fouls
+	+ Red Cards
+	+ Yellow Cards
+	+ Shots
+	+ Shots on Target
+	+ other data dependent on recency and particular league
++ Home Win Odds, Draw Odds, Away Win Odds:
+	+ by Sports Book for 5 or 6 Sports Books
+	+ Maximum Odds
+	+ Mean Odds
+	+ Other Odds such as Asian, and Goal Difference Odds
+	
+### 4.2 www.indatabet.com (Site no longer available)
+
+An Odds data site with a massive archive of odds across multiple competitions
+
+Typical Data
+
++ Nation, League, season
++ Date, Home Team, Away Team
++ Full Time Goals
++ Home Win Odds, Draw Odds, Away Win Odds:
+	+ for Pinnacle, Bet365 Sports Books
+
+
+
 
 ## 5. Data Wrangling
 
