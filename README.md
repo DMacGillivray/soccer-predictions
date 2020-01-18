@@ -198,17 +198,61 @@ Typical Data
 	+ for Pinnacle, Bet365 Sports Books
 
 
-
-
-## 5. Data Wrangling
-
-## 6. Exploratory Data Analysis
+## 5. Exploratory Data Analysis
 
 ### 6.1 Match Results
 
+Taking data for the German Bundesliga for all games from the 2007-2008 season up to the 2014-2015 season, we can see that there is a [home-field advantage)(https://en.wikipedia.org/wiki/Home_advantage), in that about 45% of games are won by the home team
+
+As shown 
+
+Home Win                 |	Draw     | Away Win
+:------------------------:|:--------------:|:------------:
+0.455                   |	0.246    | 0.297
+
+<p>
+    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/saved-images/eda-proportion-of-results-barplot.png" width="720" height="504" />
+</p>
+
+
+eda-proportion-of-results-scatterplot
+
+This effect is consistent from season to season as shown below
+
+<p>
+    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/saved-images/eda-proportion-of-results-scatterplot.png" width="720" height="504" />
+</p>
+
+
+
 ### 6.2 Goals
 
+The home-field advantage shows up in goals scored, as shown below:
+
+<p>
+    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/saved-images/eeda-multiple-seasons-home-and-away-goals-barplots.png" width="1008" height="576" />
+</p>
+
+Reviewing the chart above, we can see that the mean and variance are roughly equal for the count distributions. this point us in the direction of considering goals scored as a poisson distribution.
+
+
+If we fit a poisson distribution to the data, we can use some diagnosis plots to compare the theoretical to the actual distribution. This is shown below for goals scored by the home team, and it looks like a remarkably good fit.
+<p>
+    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/saved-images/eda-home-goals-poisson-fit-diagnosisplots.png" width="1008" height="1008" />
+</p>
+
+
+
+
 ### 6.3 Odds
+
+Reviewing the odds data, we can see that the odds of a Home Win, and a Draw have a much lower maximum than the odds for an Away Win. The Away Win odds scale is much larger. This makes sense when we consider that the reciprocal of the odds can be interpreted as being close to a probability. If the probability of an Away Win is much less likely, then the odds increase.
+
+<p>
+    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/saved-images/eda-odds-bundesliga-multipl-bookies-multiple-seasons-histogramst.png" width="864" height="576" />
+</p>
+
+TODO: redo with same shared x scale
 
 ### 6.4 Shots
 
@@ -244,15 +288,113 @@ Across season features neglected
 
 Note on probability Calibration
 
-### 9.1 Reliability Diagrams
+### 9.1 Reliability Diagrams and Multi-Class calibration Metrics
+
+calibration is an assessment of the goodness of the probability estimates from a model.
+
+Consider that we could select all instances where a model has predicted an 80% probability of an event.
+
+We can then look at the frequency of occurrence of the event across those instances
+
+If the event actually occurs about 80% of the time, then our model is well calibrated.
+
+If the event actually occurs about 20% of the time, then our model is over-confident.
+
+If the event actually occurs over 99% of the time, then our model is under-estimating the true probability.
+
+Perfect calibration looks like this:
+
+<p>
+    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/saved-images/eda-odds-bundesliga-multipl-bookies-multiple-seasons-histogramst.png" width="372" height="266" />
+</p>
+
+*The above plot is taken from [Alon Daks web site](http://alondaks.com/me/) from the article[The Importance of Calibrating Your Deep Production Model](http://alondaks.com/2017/12/31/the-importance-of-calibrating-your-deep-model/)*
+
+
+#### 9.2 Expected Calibration Error
+
+[](http://alondaks.com/2017/12/31/the-importance-of-calibrating-your-deep-model/)
+
+<p>
+    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/saved-images/eda-odds-bundesliga-multipl-bookies-multiple-seasons-histogramst.png" width="559" height="108" />
+</p>
+
+
+#### Maximum Calibration Error 
+
+<p>
+    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/saved-images/MCE-formula.png" width="581" height="75" />
+</p>
+
+
+
 
 ### 9.2 Rank probability Score
 
-### 9.3 Expected Calibration Error
+The objective of the project is to identify profitable betting opportunities. A profitable betting opportunity is captured if we are good at estimating its’ Expected Value. Expected Value is determined by 2 inputs:
+    • The probabilities output by the model
+    • The odds given by the bookmaker
+We have to remember that our model is producing probabilities of an event, but the event is itself somewhat random.
+We cannot control the odds given by the bookmaker, but we can try and develop a model that is “good” at predicting the outcome probabilities. Note that this is different to accurately classifying outcomes. How do we assess the probability output from the model?
+One [possible](https://arxiv.org/pdf/1908.08980.pdf) answer lies in a 2011 paper [“Solving the problem of inadequate scoring rules for assessing probabilistic football forecast models”](https://www.semanticscholar.org/paper/Solving-the-Problem-of-Inadequate-Scoring-Rules-for-Constantinou-Fenton/90a56f63a08784f3f63e853c30bedea48df4e478) This paper shows that soccer results can be thought of as an ordinal ranking. Home win is first, followed by a draw, followed by an away win, and that tool called the  Rank Probability Score is a better way to assess predictions.
 
-### 9.4 Field-Level Expected calibration Error
+What is the Rank Probability Score?
+This measures how good a probability forecast is at classifying an observed outcome. A perfect score is 0, the worst possible score is 1
+Formula goes here
+Consider Extreme Predictions, and the impact on RPS
+It is worthwhile reviewing some examples of Rank Probability Scores for the 3 possible match outcomes – home win, draw, and away win
+
+
+
+<p>
+    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/rps-extreme-examples.png" width="724" height="429" />
+</p>
+
+This table is enlightening. It is comprised of extreme prediction probabilities where we predict an outcome with absolute certainty – Our forecast probabilities are either 0 or 1
+    • For RPS a lower score is better
+    • We score an RPS of 0, when we predict an outcome with a probability of 1
+    • The best possible RPS for all outcomes – home win, draw, away win is 0
+    • The worst possible RPS for an observed Home or Away Win is 1.0
+    • The worst possible RPS for an observed Draw is 0.5 – this is the impact of a draw being the middle of the 3 outcomes
+    
+ Consider Baseline Frequency Predictions, and the impact on RPS
+European soccer has a significant home field advantage. This varies over time, but a home win is far more likely than either a draw, or an away win. In fact a home win is about twice as likely.
+We can plug some rough baseline frequencies into our RPS calculation and determine and review the results. 
+
+
+<p>
+    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/rps-baseline-values-table.png" width="724" height="181" />
+</p>
+
+Some comments on this table:
+
++ The RPS for each baseline frequency is different depending on the actual outcome
++ There is a significant difference between the best (lowest) Draw, and the highest (worst) Away Win
++ This means that just using baseline frequency predictions, we do far better at predicting draws, than we do at predicting either home Wins, or away Wins.
+
+### 9.3 Probability Calibration
+
 
 ### 9.5 Model Diagnosis Suite
+
+It seems there is no single number that will conveniently allow us to make a comparison between various models.
+
+Therefore, I propose a Diagnosis Suite as follows:
+
++ Values for Calibration of Multi-class Results 		+ Expected Calibration Error
+	+ Maximum calibration Error
++ Calibration Plots for each Class
++ RPS Distribution Plots for each Predicted Class
+
+A sample Diagnosis suite is shown below:
+
+<p>
+    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/model-diagniosis-suite.png" width="724" height="181" />
+</p>
+ 
+ Explanation of how to interpret
+
+
 
 #### Notebooks
 + [Demand Data - Compile & Review](https://github.com/DMacGillivray/ontario-peak-power-forecasting/blob/master/notebooks/03.01%20-%20Data%20-%20Demand%20Data%20-%20Compile%20%26%20Review.ipynb) 
