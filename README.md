@@ -51,9 +51,9 @@ So, if for example, on Saturday, there are 20 games being played across these 3 
 
 ### 1.3 Customer Value
 
-The bettor will take these numbers and scan the Sports books for odds higher than these. For the service to be good, it needs to consistently find the minimum odds needed to enable a bettor to make profitable bets over the long run. Note that it may not always possible to find profitable odds at the Sportsbooks.
+The bettor will take these numbers and scan the Sports Books for odds higher than these. For the service to be good, it needs to consistently find the minimum odds needed to enable a bettor to make profitable bets over the long run. Note that it may not always possible to find profitable odds at the Sports Books.
 
-So if I want to bet on Liverpool winning their 21 January game against Manchester United, I would find a Sportsbook giving decimal odds higher than 1.5, and place the bet.
+So if I want to bet on Liverpool winning their 21 January game against Manchester United, I would find a Sports Book giving decimal odds higher than 1.5, and place the bet.
 
 ### 1.4 Business Objective
 
@@ -68,9 +68,63 @@ Identify break-even odds for the next set of soccer games to be played in the Pr
 
 Develop a model based on publicly available, free data that will identify break-even odds for the next set of soccer games to be played in the Premier League, Bundesliga, and Serie A
 
-## 3. Understanding the Objective
+## 3. Understanding the Machine Learning Objective
 
-### 3.1 Odds and the Overround
+### 3.1 Randomness in Soccer Games
+
+There is a significant degree of [randomness involved in soccer games](https://www.nytimes.com/2014/07/08/science/soccer-a-beautiful-game-of-chance.html). We can never really know with 100% confidence what the final score will be. This is very different to a standard classification problem - say classifying images of cats and dogs. For cats and dogs there is a solid ground truth for the class. A cat is a cat with 100% certainty. This can be determined before we run the image through the model. A random event is different, we can never get to the point where we are predicting a single outcome with 100% certainty, because the outcome itself is uncertain. We can never get to the point where we say … 
+
+However, if we do a thought experiment and imagine that a football game between the same 2 teams was played 100 times, we could reasonably assume that we would not get the same final score for all 100 games. In fact it could be argued that the inherent randomness in the game is what makes it so exciting, and hence so popular.
+
+Because of the probabilistic nature of the outcome, we need to carefully consider the types of models we use to classify game outcomes. Our objective is not accurate classification, but accurate probabilities.
+
+### 3.2 What Makes a Profitable Bet?
+
+We can think of a football game like this. If this game were played a million times, how would the possible outcomes be proportioned? If we could do this, imagine the home team won 320,000 times, there was a draw 270,000 times, and an away win 410,000 times?
+With this (imaginary) data we would be able to say the probability distribution for the game results would be as follows:
+
+Home Win                 |	Draw     | Away Win
+:------------------------:|:--------------:|:------------:
+0.32                   |	0.27    | 0.41
+
+The next component to the bet is the odds
+Let’s say we go to 3 Sports Books and find the following odds for home wins – How do we know which bets are profitable?
+
+Odds # 1                 |	Odds # 2
+:------------------------:|:--------------:
+2.92                   |	3.30
+
+We call the amount we will place on the bet the stake
+ 
+We can calculate the Expected Value of the bet, to see which odds are favourable
+
+Expected Value (EV) is the probability of winning the bet multiplied by the potential winnings minus the probability of losing the bet multiplied by our potential loss.
+
++ probability of winning: 0.32
++ probability of losing: 1 - probability of winning, or 1 - 0.32 = 0.68
++ potential winnings: odds - stake, or odds - 1 when stake = 1
++ potential loss: stake, or 1
+
+<a href="https://www.codecogs.com/eqnedit.php?latex=EV&space;=&space;(probability\;of\;winning\;bet&space;\times&space;(odds&space;-&space;stake)))&space;-&space;(probability\;of\;losing\;bet&space;\times&space;-&space;stake))" target="_blank"><img src="https://latex.codecogs.com/gif.latex?EV&space;=&space;(probability\;of\;winning\;bet&space;\times&space;(odds&space;-&space;stake)))&space;-&space;(probability\;of\;losing\;bet&space;\times&space;-&space;stake))" title="EV = (probability\;of\;winning\;bet \times (odds - stake))) - (probability\;of\;losing\;bet \times - stake))" /></a>
+
+If we apply this formula to our odds, and use a unit stake, we get:
+
++ Odds # 1:
+
+ <a href="https://www.codecogs.com/eqnedit.php?latex=EV&space;=&space;(0.32&space;\times&space;(2.92\;&space;-\;&space;1))\;&space;&plus;\;&space;((1-0.32)&space;\times&space;-&space;1)&space;=&space;-0.0656" target="_blank"><img src="https://latex.codecogs.com/gif.latex?EV&space;=&space;(0.32&space;\times&space;(2.92\;&space;-\;&space;1))\;&space;&plus;\;&space;((1-0.32)&space;\times&space;-&space;1)&space;=&space;-0.0656" title="EV = (0.32 \times (2.92\; -\; 1))\; +\; ((1-0.32) \times - 1) = -0.0656" /></a>
++ Odds # 2:
+
+ <a href="https://www.codecogs.com/eqnedit.php?latex=EV&space;=&space;(0.32&space;\times&space;(3.30\;&space;-\;&space;1))\;&space;&plus;\;&space;((1-0.32)&space;\times&space;-&space;1)&space;=&space;0.056" target="_blank"><img src="https://latex.codecogs.com/gif.latex?EV&space;=&space;(0.32&space;\times&space;(3.30\;&space;-\;&space;1))\;&space;&plus;\;&space;((1-0.32)&space;\times&space;-&space;1)&space;=&space;0.056" title="EV = (0.32 \times (3.30\; -\; 1))\; +\; ((1-0.32) \times - 1) = 0.056" /></a>
+
+So, If we can get Odds #2, we have a positive Expected Value bet, and assuming we are confident of our probability prediction, we should place the bet. Alternatively, if we can only get Odds #1, we have a negative Expected value, and we should avoid the bet.
+
+Clearly, even with positive EV, we may lose this particular bet. We recognize we have a 68% probability of losing the bet. However, over the long run, if we are correctly identifying, and placing, positive EV bets, we will make money.
+
+The counter-intuitive implication of using EV, is that if we find 2 positive EV bets on the same game - say Home Win, and Draw, then in theory we should place both bets! We will deal with this issue later.
+
+
+
+### 3.3 Expected Value
 
 ### 3.2 Expected value of a Bet
 
