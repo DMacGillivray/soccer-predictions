@@ -2,19 +2,19 @@
 # Soccer Predictions
 
 1. [Business Opportunity: Odds Advice](#1-business-opportunity-odds-advice)
-2. [Data Source Review](#2-data-source-review)
-3. [Data Wrangling](#3-data-wrangling)
-4. [Exploratory Data Analysis](#4-exploratory-data-analysis)
-5. [Modeling Strategy](#5-modeling-strategy)
-6. [Feature Engineering](#6-feature-engineering)
-7. [Feature Selection](#7-feature-selection)
-8. [Modeling](#8-modeling)
-9. [Model Prediction and Review](#9-model-prediction-and-review)
-10. [Selecting the Best Model](#10-selecting-the best-model)
-11. [Test Data Results](#11-test-data-results)
-12. [Next Steps](#12-next-steps)
-13. [Conclusion](#13-conclusion)
-14. [Tips for Reproducing This Project](#14-tips-for-reproducing-this-project)
+2. [Data Science Objective](#2-data-science-objective)
+3. [Understanding the Business Objective](#3-understanding-the-business-objective)
+4. [Data Sources and Description](#4-data-sources-and-description)
+5. [Exploratory Data Analysis](#5-exploratory-data-analysis)
+6. [Metrics and Model Diagnostics](#6-metrics-and-model-diagnostics)
+7. [Data Wrangling](#7-data-wrangling)
+8. [Features and Feature Engineering](#8-features-and-feature-engineering)
+9. [Modeling](#9-modeling)
+10. [Model Results](#10-model-results)
+11. [Business Results](#11-business-results)
+12. [Conclusion](#12-conclusion)
+13. [Next Steps](#13-next-steps)
+14. [Software Packages](#14-software-packages)
 <br/><br/>
 
 ## 1. Business Opportunity: Odds Advice
@@ -68,7 +68,7 @@ Identify break-even odds for the next set of soccer games to be played in the Pr
 
 Develop a model based on free & publicly available data that will identify break-even odds for the next set of soccer games to be played in the Premier League, Bundesliga, and Serie A
 
-## 3. Understanding the Data Science Objective
+## 3. Understanding the Business Objective
 
 ### 3.1 Randomness in Soccer Games
 
@@ -157,7 +157,10 @@ The table below shows Expected Value calculations on some typical odds
     <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/odds-to-EV-calculation-table.png" width="599" height="317" />
 </p>
 
+#### Notebooks
++ [Demand Data - Compile & Review](https://github.com/DMacGillivray/ontario-peak-power-forecasting/blob/master/notebooks/03.01%20-%20Data%20-%20Demand%20Data%20-%20Compile%20%26%20Review.ipynb) 
 
++ [Demand Data - Inpute Missing Values & Deal with Outliers](https://github.com/DMacGillivray/ontario-peak-power-forecasting/blob/master/notebooks/03.02%20-%20Data%20-%20Demand%20Data%20-%20Impute%20Missing%20Values%20%26%20Deal%20with%20Outliers.ipynb)
 
 ## 4. Data Sources and Description
 
@@ -197,10 +200,15 @@ Typical Data
 + Home Win Odds, Draw Odds, Away Win Odds:
 	+ for Pinnacle, Bet365 Sports Books
 
+#### Notebooks
++ [Demand Data - Compile & Review](https://github.com/DMacGillivray/ontario-peak-power-forecasting/blob/master/notebooks/03.01%20-%20Data%20-%20Demand%20Data%20-%20Compile%20%26%20Review.ipynb) 
+
++ [Demand Data - Inpute Missing Values & Deal with Outliers](https://github.com/DMacGillivray/ontario-peak-power-forecasting/blob/master/notebooks/03.02%20-%20Data%20-%20Demand%20Data%20-%20Impute%20Missing%20Values%20%26%20Deal%20with%20Outliers.ipynb)
+
 
 ## 5. Exploratory Data Analysis
 
-### 6.1 Match Results
+### 5.1 Match Results
 
 Taking data for the German Bundesliga for all games from the 2007-2008 season up to the 2014-2015 season, we can see that there is a [home-field advantage)(https://en.wikipedia.org/wiki/Home_advantage), in that about 45% of games are won by the home team
 
@@ -225,7 +233,7 @@ This effect is consistent from season to season as shown below
 
 
 
-### 6.2 Goals
+### 5.2 Goals
 
 The home-field advantage shows up in goals scored, as shown below:
 
@@ -244,7 +252,7 @@ If we fit a poisson distribution to the data, we can use some diagnosis plots to
 
 
 
-### 6.3 Odds
+### 5.3 Odds
 
 Reviewing the odds data, we can see that the odds of a Home Win, and a Draw have a much lower maximum than the odds for an Away Win. The Away Win odds scale is much larger. This makes sense when we consider that the reciprocal of the odds can be interpreted as being close to a probability. If the probability of an Away Win is much less likely, then the odds increase.
 
@@ -254,15 +262,15 @@ Reviewing the odds data, we can see that the odds of a Home Win, and a Draw have
 
 TODO: redo with same shared x scale
 
-### 6.4 Shots
+### 5.4 Shots
 
-### 6.5 Shots on Target
+### 5.5 Shots on Target
 
-### 6.6 Other Match Data
+### 5.6 Other Match Data
 
-### 6.7 Expected Goals xG
+### 5.7 Expected Goals xG
 
-### 6.8 League Differences
+### 5.8 League Differences
 
 #### Notebooks
 + [Demand Data - Compile & Review](https://github.com/DMacGillivray/ontario-peak-power-forecasting/blob/master/notebooks/03.01%20-%20Data%20-%20Demand%20Data%20-%20Compile%20%26%20Review.ipynb) 
@@ -270,25 +278,13 @@ TODO: redo with same shared x scale
 + [Demand Data - Inpute Missing Values & Deal with Outliers](https://github.com/DMacGillivray/ontario-peak-power-forecasting/blob/master/notebooks/03.02%20-%20Data%20-%20Demand%20Data%20-%20Impute%20Missing%20Values%20%26%20Deal%20with%20Outliers.ipynb) 
 
 
-## 7. Features
 
-Across season features neglected
 
-### 7.1 Model Results as Features
-
-### 7.2 Poisson Regression
-
-### 7.3 Odds as Implied Probabilities
-
-### 7.4 Game Data
-
-## 8. Data Work Flow
-
-## 9. Metrics and model Diagnosis
+## 6. Metrics and model Diagnosis
 
 Note on probability Calibration
 
-### 9.1 Reliability Diagrams and Multi-Class calibration Metrics
+### 6.1 Reliability Diagrams and Multi-Class calibration Metrics
 
 calibration is an assessment of the goodness of the probability estimates from a model.
 
@@ -311,7 +307,7 @@ Perfect calibration looks like this:
 *The above plot is taken from [Alon Daks web site](http://alondaks.com/me/) from the article[The Importance of Calibrating Your Deep Production Model](http://alondaks.com/2017/12/31/the-importance-of-calibrating-your-deep-model/)*
 
 
-#### 9.2 Expected Calibration Error
+#### 6.2 Expected Calibration Error
 
 
 <p>
@@ -319,7 +315,7 @@ Perfect calibration looks like this:
 </p>
 See [The Importance of Calibrating Your Deep Production Model](http://alondaks.com/2017/12/31/the-importance-of-calibrating-your-deep-model/) for details
 
-#### Maximum Calibration Error 
+#### 6.3 Maximum Calibration Error 
 
 <p>
     <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/MCE-formula.png" width="581" height="75" />
@@ -328,7 +324,7 @@ See [The Importance of Calibrating Your Deep Production Model](http://alondaks.c
 See [The Importance of Calibrating Your Deep Production Model](http://alondaks.com/2017/12/31/the-importance-of-calibrating-your-deep-model/) for details
 
 
-### 9.2 Rank probability Score
+### 6.4 Rank probability Score
 
 The objective of the project is to identify profitable betting opportunities. A profitable betting opportunity is captured if we are good at estimating its’ Expected Value. Expected Value is determined by 2 inputs:
     • The probabilities output by the model
@@ -371,10 +367,7 @@ Some comments on this table:
 + There is a significant difference between the best (lowest) Draw, and the highest (worst) Away Win
 + This means that just using baseline frequency predictions, we do far better at predicting draws, than we do at predicting either home Wins, or away Wins.
 
-### 9.3 Probability Calibration
-
-
-### 9.5 Model Diagnosis Suite
+### 6.5 Model Diagnosis Suite
 
 It seems there is no single number that will conveniently allow us to make a comparison between various models.
 
@@ -388,7 +381,7 @@ Therefore, I propose a Diagnosis Suite as follows:
 A sample Diagnosis suite is shown below:
 
 <p>
-    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/model-diagniosis-suite.png" width="724" height="181" />
+    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/model-diagnosis-suite.png" width="731" height="668" />
 </p>
  
  Explanation of how to interpret
@@ -400,33 +393,87 @@ A sample Diagnosis suite is shown below:
 
 + [Demand Data - Inpute Missing Values & Deal with Outliers](https://github.com/DMacGillivray/ontario-peak-power-forecasting/blob/master/notebooks/03.02%20-%20Data%20-%20Demand%20Data%20-%20Impute%20Missing%20Values%20%26%20Deal%20with%20Outliers.ipynb) 
 
-## 10. Modeling
 
-### 10.1 Dealing with Class Imbalance
+## 7. Data Wrangling
 
-### 10.2 Feature Compression
+### 7.1 Data Flow
 
-### 10.3 Feature Selection
+<p>
+    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/data-flow.png" width="416" height="1201" />
+</p>
 
-### 10.4 Model Comparison on Validation Data
+### 7.2 Data Splitting For Modeling
 
-### 10.5 Model Performance on Held out Test Data
+<p>
+    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/data-splitting-strategy.png" width="882" height="673" />
+</p>
+
+#### Notebooks
++ [Demand Data - Compile & Review](https://github.com/DMacGillivray/ontario-peak-power-forecasting/blob/master/notebooks/03.01%20-%20Data%20-%20Demand%20Data%20-%20Compile%20%26%20Review.ipynb) 
+
++ [Demand Data - Inpute Missing Values & Deal with Outliers](https://github.com/DMacGillivray/ontario-peak-power-forecasting/blob/master/notebooks/03.02%20-%20Data%20-%20Demand%20Data%20-%20Impute%20Missing%20Values%20%26%20Deal%20with%20Outliers.ipynb)
+
+## 8. Features
+
+Across season features neglected
+
+### 8.1 Model Results as Features
+
+### 8.2 Poisson Regression
+
+### 8.3 Odds as Implied Probabilities
+
+### 8.4 Game Data
+
+#### Notebooks
++ [Demand Data - Compile & Review](https://github.com/DMacGillivray/ontario-peak-power-forecasting/blob/master/notebooks/03.01%20-%20Data%20-%20Demand%20Data%20-%20Compile%20%26%20Review.ipynb) 
+
++ [Demand Data - Inpute Missing Values & Deal with Outliers](https://github.com/DMacGillivray/ontario-peak-power-forecasting/blob/master/notebooks/03.02%20-%20Data%20-%20Demand%20Data%20-%20Impute%20Missing%20Values%20%26%20Deal%20with%20Outliers.ipynb)
+
+## 9. Modeling
+
+### 9.1 Calibrated Classifiers
+
+### 9.2 Classifiers + Probability Calibration
+
+#### Notebooks
++ [Demand Data - Compile & Review](https://github.com/DMacGillivray/ontario-peak-power-forecasting/blob/master/notebooks/03.01%20-%20Data%20-%20Demand%20Data%20-%20Compile%20%26%20Review.ipynb) 
+
++ [Demand Data - Inpute Missing Values & Deal with Outliers](https://github.com/DMacGillivray/ontario-peak-power-forecasting/blob/master/notebooks/03.02%20-%20Data%20-%20Demand%20Data%20-%20Impute%20Missing%20Values%20%26%20Deal%20with%20Outliers.ipynb)
+
+
+## 10. Model Results
+
+### 10.1 Validation Results
+
+### 10.2 Results on Held-Out Test Data
+
+#### Notebooks
++ [Demand Data - Compile & Review](https://github.com/DMacGillivray/ontario-peak-power-forecasting/blob/master/notebooks/03.01%20-%20Data%20-%20Demand%20Data%20-%20Compile%20%26%20Review.ipynb) 
+
++ [Demand Data - Inpute Missing Values & Deal with Outliers](https://github.com/DMacGillivray/ontario-peak-power-forecasting/blob/master/notebooks/03.02%20-%20Data%20-%20Demand%20Data%20-%20Impute%20Missing%20Values%20%26%20Deal%20with%20Outliers.ipynb)
+
+## 11. Business Results
+
+### 11.1 XXXXXXXXX
+
+### 11.2 XXXXXXXXXX
+
 
 #### Notebooks
 + [Demand Data - Compile & Review](https://github.com/DMacGillivray/ontario-peak-power-forecasting/blob/master/notebooks/03.01%20-%20Data%20-%20Demand%20Data%20-%20Compile%20%26%20Review.ipynb) 
 
 + [Demand Data - Inpute Missing Values & Deal with Outliers](https://github.com/DMacGillivray/ontario-peak-power-forecasting/blob/master/notebooks/03.02%20-%20Data%20-%20Demand%20Data%20-%20Impute%20Missing%20Values%20%26%20Deal%20with%20Outliers.ipynb) 
 
-##11. Business Results
 
-#### Notebooks
-+ [Demand Data - Compile & Review](https://github.com/DMacGillivray/ontario-peak-power-forecasting/blob/master/notebooks/03.01%20-%20Data%20-%20Demand%20Data%20-%20Compile%20%26%20Review.ipynb) 
 
-+ [Demand Data - Inpute Missing Values & Deal with Outliers](https://github.com/DMacGillivray/ontario-peak-power-forecasting/blob/master/notebooks/03.02%20-%20Data%20-%20Demand%20Data%20-%20Impute%20Missing%20Values%20%26%20Deal%20with%20Outliers.ipynb) 
+## 12. Conclusion
 
-## 12. Next Steps
 
-## Apendix A: Software Packages
+## 13. Next Steps
+
+## 14. Software Packages
+
 
 Package                 |	Version     | Usage
 :------------------------|:--------------:|:------------
@@ -446,28 +493,12 @@ Skyfield	| 1.11  | Solstice Calculations
 Holidays    | 0.9.11   | Statutory Vacation Days
 
 
-## Appendix B: Summary of Data Sources
-
-+ Electricity Demand
-	* Data used in this project - Ontario Hourly Electrical Demand 1994 to 2019 [Data Directory](https://github.com/DMacGillivray/ontario-peak-power-forecasting/tree/master/data/01-raw/demand)
-+ Electricity Demand Data Sources & Resources
-	+ [Independent Electricity System Operator (IESO) Web Page  - Data Directory](http://www.ieso.ca/Power-Data/Data-Directory)
-	+ [Download - Ontario Electricity Demand 1994 - 2002](http://www.ieso.ca/-/media/Files/IESO/Power-Data/data-directory/HourlyDemands_1994-2002.csv?la=en)
-	+ [Download - Ontario Electricity Demand 2002 to present](http://reports.ieso.ca/public/Demand/)
-
-+ Weather
-	* Data used in this project - Toronto (YYZ) Hourly Weather 1953 to 2019 - [Data Directory](https://github.com/DMacGillivray/ontario-peak-power-forecasting/tree/master/data/01-raw/weather-toronto)
-+ Weather Data Sources & Resources
-	* [Historical Weather Data Search Page](https://climate.weather.gc.ca/historical_data/search_historic_data_e.html)
-	* [How to use - Historical Data pdf](https://climate.weather.gc.ca/doc/Historical_Data_How_to_Use.pdf)
-	* [How to bulk download historical weather data from Canadian government website using R](https://stackoverflow.com/questions/53824071/how-to-bulk-download-historical-weather-data-from-canadian-government-website-us/53939602#53939602)
-	* [Download Scripts for Canadian Weather Bulk Download](https://github.com/DMacGillivray/ontario-peak-power-forecasting/blob/master/src/raw-data/wget-bulk-weather.txt)
 
 
 <br/><br/>
 
 
-						David MacGillivray – Springboard Capstone Project 1 – 9 October 2019
+						David MacGillivray – Springboard Capstone Project 2 – 2 February 2020
 
 
 <br/><br/>
