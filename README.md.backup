@@ -45,7 +45,7 @@ The web service will provide a list of upcoming games, along with the minimum od
 
 So, if for example, on Saturday, there are 20 games being played across these 3 leagues, 60 minimum odds recommendations will be made - 3 for each game - An example is shown below:
 <p>
-    <img src="notebooks/saved-images/web-service-profitable-odds-table.PNG" width="1080" height="504" />
+    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/web-service-profitable-odds-table.png" width="1080" height="504" />
 </p>
 ### 1.3 Customer Value
 
