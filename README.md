@@ -324,7 +324,7 @@ See [The Importance of Calibrating Your Deep Production Model](http://alondaks.c
 See [The Importance of Calibrating Your Deep Production Model](http://alondaks.com/2017/12/31/the-importance-of-calibrating-your-deep-model/) for details
 
 
-### 6.4 Rank probability Score
+### 6.4 Rank Probability Score
 
 The objective of the project is to identify profitable betting opportunities. A profitable betting opportunity is captured if we are good at estimating its’ Expected Value. Expected Value is determined by 2 inputs:
     • The probabilities output by the model
@@ -399,10 +399,14 @@ A sample Diagnosis suite is shown below:
 ### 7.1 Data Flow
 
 <p>
-    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/data-flow.png" width="416" height="1201" />
+    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/data-flow.png" width="600" height="1732" />
 </p>
 
 ### 7.2 Data Splitting For Modeling
+
+The graphic below gives an idea of the way the data is split for modeling, and the number of instances used for training and validation.
+
+Probability calibration is done using disjoint data from training, validation, and test, to prevent over-fitting.
 
 <p>
     <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/data-splitting-strategy.png" width="882" height="673" />
@@ -420,6 +424,23 @@ Across season features neglected
 ### 8.1 Model Results as Features
 
 ### 8.2 Poisson Regression
+
+The Poisson Regression used as a feature in this model is based directly on work published by [David Sheehan](https://dashee87.github.io/about/)
+
+This page - [Predicting Football Results with Statistical Modeling](https://dashee87.github.io/football/python/predicting-football-results-with-statistical-modelling/) - runs through a method for running a Poisson Regression applied to English Premier League data
+
+The modifications made to the original are as follows:
++ The `statsmodels` Poisson Regression model is wrapped in a scikit-learn classifier wrapper
++ The season is split up into `game days` - a game day is a day during the season when at least one soccer game is played
++ The game days are used to create a time series splitting function, so that all the prior season's results are used to predict a poisson mean for goals scored by every team playing on the current game day. The time series splitter walks through the season from beginning to end
++ At the start of the season, there is not enough data for the poission regression to run, so the predict data is filled with zeros
++ As per the original methodology, the poisson means for each team are assumed to be independent, and a probability table is formed - shown below. The probabilities for Home Win, Draw, and Away Win are then summed from the table
+
+<p>
+    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/poisson-probability-table.png" width="643" height="660" />
+</p>
+
+
 
 ### 8.3 Odds as Implied Probabilities
 
