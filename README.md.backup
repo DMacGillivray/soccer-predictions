@@ -423,6 +423,64 @@ Across season features neglected
 
 ### 8.1 Model Results as Features
 
+
+Obviously, a season is played in a time series sequence
+
+A time series limits some of the models we can apply, therefore we will convert the data from a time series pattern to a supervised learning type pattern.
+
+Consider a game played mid-season with Team A playing at home, and Team B playing away.
+
+We believe that previous performance - for example goals scored - may help us predict the outcome of this particular game. Therefore, we could look at goals scored by each team in all their previous games, and calculate a mean for each team. However, if we did this, we would lose the ability to see each previous score.
+
+An alternative way of organizing the data would be to transpose the previous data along the row for the game. We would be [converting the time series problem to a supervised problem](https://machinelearningmastery.com/convert-time-series-supervised-learning-problem-python/)
+
+We would need to do this for both Team A and Team B, so we could end up with a row that looked like below:
+
+Home Team                 |	Away Team     | Team A -1 goals scored | Team A -2 Goals scored | Team B -1 goals scored | Team B -2 Goals scored
+:------------:|:------------:|:------------:|:------------:|:------------:|:------------:|
+A           |	B          | 3 | 2 | 0 | 1 
+
+The table shows that Team A in their last game scored 3 goals. In the game before that, they scored 2 goals. Team B, in their last game scored no goals, and in the game before that they scored 1 goal.
+
+
+This is a start, but it ignores the difference between how well teams do playing at home, compared to when they play away. Therefore, a more nuanced scheme would be to consider each team's home and away records separately
+
+Thgis is explained below:
+
+So, consider a match being played today, where we want to get the full time goals - `ftGoals` scored by the home team in their previous n games
+
+To get the **number of goals** scored by the **home team** in the **last 2 games** they played **at home**:
++ h_h_ftGoals-1
++ h_h_ftGoals-2
+
+To get the **number of goals** scored by the **home team** in the **last 3 games** they played **away**:
++ h_a_ftGoals-1
++ h_a_ftGoals-2
++ h_a_ftGoals-3
+
+To get the **poisson regression probability of winning** for the **away team** in the **last (1) game** they played **away**:
++ a_a_poissWin-1
+
+
+#### Interpretation Note
+
+`h_h_feat_-1` means:
++ (`h`) home team 
++ (`h`) home game records 
++ (`feat`) feature value in 
++ (`-1`) last game
+
+The consequence of this data transposition is that we get more features as the season progresses.
+
+This is illustrated below for a team playing away, by looking at their away full time goals record:
+
+<p>
+    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/feature-fill-in-during-season.png" width="638" height="285" />
+</p>
+
+We can use this transposition to create a row for each game where the features could be corners, goals scored, implied probability, poisson regression probability etc, etc
+
+
 ### 8.2 Poisson Regression
 
 The Poisson Regression used as a feature in this model is based directly on work published by [David Sheehan](https://dashee87.github.io/about/)
@@ -443,6 +501,27 @@ The modifications made to the original are as follows:
 
 
 ### 8.3 Odds as Implied Probabilities
+
+The plot below shows the distribution of home win, draw, and away win probabilities over a season.
+
+<p>
+    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/implied-probabilities-distributions.png" width="640" height="433660" />
+</p>
+
+
+These probabilities match with our previous analysis - section 5.1 where we showed that 
+As shown 
+
+Home Win                 |	Draw     | Away Win
+:------------------------:|:--------------:|:------------:
+0.455                   |	0.246    | 0.297
+
+
+As shown in section 3.3 we can convert odds to an implied probability. In fact we can use this as a feature. Furthermore, because we are transposing the historical data, we can get the implied probability of the home team winning their last 3 home games, and compare it to the implied probabilities of the away team winning their last 3 away games. Even better, because odds are available prior to game start, we can use the odds for the current game as a feature.
+
+
+
+
 
 ### 8.4 Game Data
 
