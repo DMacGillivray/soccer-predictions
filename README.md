@@ -60,7 +60,6 @@ So if I want to bet on Liverpool winning their 21 January game against Mancheste
 Identify break-even odds for the next set of soccer games to be played in the Premier League, Bundesliga, and Serie A
 
 
-
 ## 2. Data Science Objective
 
 Develop a model based on free & publicly available data that will identify break-even odds for the next set of soccer games to be played in the Premier League, Bundesliga, and Serie A
@@ -155,9 +154,8 @@ The table below shows Expected Value calculations on some typical odds
 </p>
 
 #### Notebooks
-+ [Demand Data - Compile & Review](https://github.com/DMacGillivray/ontario-peak-power-forecasting/blob/master/notebooks/03.01%20-%20Data%20-%20Demand%20Data%20-%20Compile%20%26%20Review.ipynb) 
++ [Business Objective - Betting, Expected Values](https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/003.001%20Business%20Objective-%20Betting%2C%20Expected%20Values.ipynb) 
 
-+ [Demand Data - Inpute Missing Values & Deal with Outliers](https://github.com/DMacGillivray/ontario-peak-power-forecasting/blob/master/notebooks/03.02%20-%20Data%20-%20Demand%20Data%20-%20Impute%20Missing%20Values%20%26%20Deal%20with%20Outliers.ipynb)
 
 ## 4. Data Sources and Description
 
@@ -198,9 +196,9 @@ Typical Data
 	+ for Pinnacle, Bet365 Sports Books
 
 #### Notebooks
-+ [Demand Data - Compile & Review](https://github.com/DMacGillivray/ontario-peak-power-forecasting/blob/master/notebooks/03.01%20-%20Data%20-%20Demand%20Data%20-%20Compile%20%26%20Review.ipynb) 
++ [Data Sources - www.football-data.co.uk](https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/004.001%20-%20Data%20Sources%20-%20www.football-data.co.uk.ipynb) 
 
-+ [Demand Data - Inpute Missing Values & Deal with Outliers](https://github.com/DMacGillivray/ontario-peak-power-forecasting/blob/master/notebooks/03.02%20-%20Data%20-%20Demand%20Data%20-%20Impute%20Missing%20Values%20%26%20Deal%20with%20Outliers.ipynb)
++ [Data Sources - www.indatabet.com](https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/004.002%20-%20Data%20Sources%20-%20www.indatabet.com.ipynb)
 
 
 ## 5. Exploratory Data Analysis
@@ -267,10 +265,15 @@ TODO: redo with same shared x scale
 
 
 #### Notebooks
-+ [Demand Data - Compile & Review](https://github.com/DMacGillivray/ontario-peak-power-forecasting/blob/master/notebooks/03.01%20-%20Data%20-%20Demand%20Data%20-%20Compile%20%26%20Review.ipynb) 
++ [EDA - Results](https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/005.001%20EDA%20-%20Results.ipynb) 
 
-+ [Demand Data - Inpute Missing Values & Deal with Outliers](https://github.com/DMacGillivray/ontario-peak-power-forecasting/blob/master/notebooks/03.02%20-%20Data%20-%20Demand%20Data%20-%20Impute%20Missing%20Values%20%26%20Deal%20with%20Outliers.ipynb) 
++ [EDA - Goals](https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/005.002%20EDA%20-%20Goals.ipynb) 
 
++ [EDA - Odds](https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/005.003%20EDA%20-%20Odds.ipynb) 
+
++ + [EDA - Shots](https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/005.004%20EDA%20-%20Shots.ipynb) 
++ 
++ + [EDA - Shots on Target](https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/005.005%20EDA%20-%20Shots%20on%20Target.ipynb) 
 
 
 
@@ -383,9 +386,9 @@ A sample Diagnosis suite is shown below:
 
 
 #### Notebooks
-+ [Demand Data - Compile & Review](https://github.com/DMacGillivray/ontario-peak-power-forecasting/blob/master/notebooks/03.01%20-%20Data%20-%20Demand%20Data%20-%20Compile%20%26%20Review.ipynb) 
++ [Metrics - Rank Probability Score](https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/006.001%20Modeling%20Strategy%20-%20Rank%20Probability%20Score%201.ipynb) 
 
-+ [Demand Data - Inpute Missing Values & Deal with Outliers](https://github.com/DMacGillivray/ontario-peak-power-forecasting/blob/master/notebooks/03.02%20-%20Data%20-%20Demand%20Data%20-%20Impute%20Missing%20Values%20%26%20Deal%20with%20Outliers.ipynb) 
+
 
 
 ## 7. Data Wrangling
@@ -407,9 +410,8 @@ Probability calibration is done using disjoint data from training, validation, a
 </p>
 
 #### Notebooks
-+ [Demand Data - Compile & Review](https://github.com/DMacGillivray/ontario-peak-power-forecasting/blob/master/notebooks/03.01%20-%20Data%20-%20Demand%20Data%20-%20Compile%20%26%20Review.ipynb) 
++ [Data Wrangling - Data Shape after Transformation](https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/007.001%20Data%20Wrangling%20-%20Data%20Shape%20after%20Transformation.ipynb) 
 
-+ [Demand Data - Inpute Missing Values & Deal with Outliers](https://github.com/DMacGillivray/ontario-peak-power-forecasting/blob/master/notebooks/03.02%20-%20Data%20-%20Demand%20Data%20-%20Impute%20Missing%20Values%20%26%20Deal%20with%20Outliers.ipynb)
 
 ## 8. Features
 
@@ -516,13 +518,10 @@ As shown in section 3.3 we can convert odds to an implied probability. In fact w
 
 
 
-
-### 8.4 Game Data
-
 #### Notebooks
-+ [Demand Data - Compile & Review](https://github.com/DMacGillivray/ontario-peak-power-forecasting/blob/master/notebooks/03.01%20-%20Data%20-%20Demand%20Data%20-%20Compile%20%26%20Review.ipynb) 
++ [Features - Poisson Regression](https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/008.001%20Features%20-%20Poisson%20Regression.ipynb) 
 
-+ [Demand Data - Inpute Missing Values & Deal with Outliers](https://github.com/DMacGillivray/ontario-peak-power-forecasting/blob/master/notebooks/03.02%20-%20Data%20-%20Demand%20Data%20-%20Impute%20Missing%20Values%20%26%20Deal%20with%20Outliers.ipynb)
++ [Features - Poisson Distributions to Result Probabilities](https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/008.002%20Features%20-%20Poisson%20Distributions%20to%20Result%20Probabilities.ipynb)
 
 ## 9. Modeling
 
@@ -531,9 +530,13 @@ As shown in section 3.3 we can convert odds to an implied probability. In fact w
 ### 9.2 Classifiers + Probability Calibration
 
 #### Notebooks
-+ [Demand Data - Compile & Review](https://github.com/DMacGillivray/ontario-peak-power-forecasting/blob/master/notebooks/03.01%20-%20Data%20-%20Demand%20Data%20-%20Compile%20%26%20Review.ipynb) 
++ [Modeling - Calibrated Classifiers](https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/009.001%20Modeling%20-%20Calibrated%20Classifiers.ipynb) 
 
-+ [Demand Data - Inpute Missing Values & Deal with Outliers](https://github.com/DMacGillivray/ontario-peak-power-forecasting/blob/master/notebooks/03.02%20-%20Data%20-%20Demand%20Data%20-%20Impute%20Missing%20Values%20%26%20Deal%20with%20Outliers.ipynb)
++ [Modeling - Calibrated Classifiers + Imbalance Techniques](https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/009.002%20Modeling%20-%20Calibrated%20Classifiers%20%2B%20Imbalance.ipynb)
+
++ [Modeling - Classifiers + Probability Calibration](https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/009.003%20Modeling%20-%20Classifiers%20%2B%20Probability%20Calibration.ipynb) 
+
++ [Modeling - Classifiers + Probability Calibration + Imbalance Techniques](https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/009.004%20Modeling%20-%20Classifiers%20%2B%20Probability%20Calibration%20%2B%20Imbalance.ipynb)
 
 
 ## 10. Model Results
