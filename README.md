@@ -59,10 +59,7 @@ So if I want to bet on Liverpool winning their 21 January game against Mancheste
 
 Identify break-even odds for the next set of soccer games to be played in the Premier League, Bundesliga, and Serie A
 
-#### Notebooks
-+ [Demand Data - Compile & Review](https://github.com/DMacGillivray/ontario-peak-power-forecasting/blob/master/notebooks/03.01%20-%20Data%20-%20Demand%20Data%20-%20Compile%20%26%20Review.ipynb) 
 
-+ [Demand Data - Inpute Missing Values & Deal with Outliers](https://github.com/DMacGillivray/ontario-peak-power-forecasting/blob/master/notebooks/03.02%20-%20Data%20-%20Demand%20Data%20-%20Impute%20Missing%20Values%20%26%20Deal%20with%20Outliers.ipynb) 
 
 ## 2. Data Science Objective
 
@@ -244,12 +241,14 @@ The home-field advantage shows up in goals scored, as shown below:
 Reviewing the chart above, we can see that the mean and variance are roughly equal for the count distributions. this point us in the direction of considering goals scored as a poisson distribution.
 
 
+
+
 If we fit a poisson distribution to the data, we can use some diagnosis plots to compare the theoretical to the actual distribution. This is shown below for goals scored by the home team, and it looks like a remarkably good fit.
 <p>
     <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/saved-images/eda-home-goals-poisson-fit-diagnosisplots.PNG" width="1008" height="1008" />
 </p>
 
-
+Note: Research has shown that the [Home Field Advantage varies from league to league](https://dashee87.github.io/data%20science/python/home-advantage-in-football-leagues-around-the-world/). The European leagues seem similar, but based on watching soccer, I am not convinced they are the same. Therefore, I propose training a separate model for each league. I suspect that the same type of model (e.g. decision tree) may work best across multiple leagues, but I think the fitted parameters could be different. I base this suspicion on my intuition that the style of soccer played in each league is different.
 
 
 ### 5.3 Odds
@@ -266,11 +265,6 @@ TODO: redo with same shared x scale
 
 ### 5.5 Shots on Target
 
-### 5.6 Other Match Data
-
-### 5.7 Expected Goals xG
-
-### 5.8 League Differences
 
 #### Notebooks
 + [Demand Data - Compile & Review](https://github.com/DMacGillivray/ontario-peak-power-forecasting/blob/master/notebooks/03.01%20-%20Data%20-%20Demand%20Data%20-%20Compile%20%26%20Review.ipynb) 
@@ -284,7 +278,7 @@ TODO: redo with same shared x scale
 
 Note on probability Calibration
 
-### 6.1 Reliability Diagrams and Multi-Class calibration Metrics
+### 6.1 Reliability Diagrams and Multi-Class Calibration Metrics
 
 calibration is an assessment of the goodness of the probability estimates from a model.
 
