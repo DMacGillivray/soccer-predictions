@@ -343,11 +343,12 @@ It is worthwhile reviewing some examples of Rank Probability Scores for the 3 po
 </p>
 
 This table is enlightening. It is comprised of extreme prediction probabilities where we predict an outcome with absolute certainty – Our forecast probabilities are either 0 or 1
-    • For RPS a lower score is better
-    • We score an RPS of 0, when we predict an outcome with a probability of 1
-    • The best possible RPS for all outcomes – home win, draw, away win is 0
-    • The worst possible RPS for an observed Home or Away Win is 1.0
-    • The worst possible RPS for an observed Draw is 0.5 – this is the impact of a draw being the middle of the 3 outcomes
+
++ For RPS a lower score is better
++ We score an RPS of 0, when we predict an outcome with a probability of 1
++ The best possible RPS for all outcomes – home win, draw, away win is 0
++ The worst possible RPS for an observed Home or Away Win is 1.0
++ The worst possible RPS for an observed Draw is 0.5 – this is the impact of a draw being the middle of the 3 outcomes
     
  Consider Baseline Frequency Predictions, and the impact on RPS
 European soccer has a significant home field advantage. This varies over time, but a home win is far more likely than either a draw, or an away win. In fact a home win is about twice as likely.
@@ -441,7 +442,7 @@ The table shows that Team A in their last game scored 3 goals. In the game befor
 
 This is a start, but it ignores the difference between how well teams do playing at home, compared to when they play away. Therefore, a more nuanced scheme would be to consider each team's home and away records separately
 
-Thgis is explained below:
+This is explained below:
 
 So, consider a match being played today, where we want to get the full time goals - `ftGoals` scored by the home team in their previous n games
 
