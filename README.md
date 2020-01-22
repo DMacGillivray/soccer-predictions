@@ -560,6 +560,19 @@ The other consequence of transposing the data is that the number of features exp
 
 ### 9.2 Classifiers + Probability Calibration
 
+#### Random Forest + Probability Calibration Validation Set # 1
+
+<p>
+    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/rf-val-fold-1.png" width="678" height="613" />
+</p>
+
+#### Random Forest + Probability Calibration Validation Set # 2
+<p>
+    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/rf-val-fold-2.png" width="678" height="613" />
+</p>
+
+
+
 #### Notebooks
 + [Modeling - Calibrated Classifiers](https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/009.001%20Modeling%20-%20Calibrated%20Classifiers.ipynb) 
 
@@ -575,6 +588,13 @@ The other consequence of transposing the data is that the number of features exp
 ### 10.1 Validation Results
 
 ### 10.2 Results on Held-Out Test Data
+
+#### Random Forest + Probability Calibration Held Out Test Data
+<p>
+    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/rf-held-out-test-data.png" width="678" height="613" />
+</p>
+
+#### Best Model Betting Simulation Results
 
 <p>
     <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/model-betting-results.png" width="678" height="613" />
