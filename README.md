@@ -621,7 +621,7 @@ The other consequence of transposing the data is that the number of features exp
 ### 11.2 XXXXXXXXXX
 
 <p>
-    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/weekly-returns.png" width="796" height="317" />
+    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/weekly-returns.png" width="303" height="562" />
 </p>
 
 #### Notebooks
