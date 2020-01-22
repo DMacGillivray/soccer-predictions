@@ -516,7 +516,36 @@ Home Win                 |	Draw     | Away Win
 
 As shown in section 3.3 we can convert odds to an implied probability. In fact we can use this as a feature. Furthermore, because we are transposing the historical data, we can get the implied probability of the home team winning their last 3 home games, and compare it to the implied probabilities of the away team winning their last 3 away games. Even better, because odds are available prior to game start, we can use the odds for the current game as a feature.
 
+### 8.4 Impact of Transformation from Time Series to Supervised Pattern
 
+#### Dropped Data
+The transformation takes historical data and transposes it to a row format - It rotates the data from vertical to horizontal. This means we get column features such as *home team last home game number of shots* (denoted as h_h_shots-1), and *home team second to last home game number of shots* (denoted as h_h_shots-2).
+
+The advantage of this is that it allows us to use historical data as features without aggregating it to a summary statistic such as a mean (although we can still do this if needed).
+
+The disadvantage is that the data fills in as the season progresses leaving gaps in the data. We can see this effect in the image below where each feature has a triangular shape.
+
+<p>
+    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/all-feature-columns-data-shape.png" width="821" height="318" />
+</p>
+
+We can look in more detail at a single feature set below
+
+<p>
+    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/single-feature-feature-columns-shape.png" width="821" height="318" />
+</p>
+
+However, this is not too severe a problem if we believe that the last few games a team has played is a better indicator of current form than every single one of their previous games. For example, we may think we can get a good idea of a team's current form by reviewing the last 4 games a team has played rather than the last 12.
+
+This is somewhat in line with [Dixon-Coles](http://web.math.ku.dk/~rolf/teaching/thesis/DixonColes.pdf) paper, where they develop the idea of a decay factor to historical results so that recent games had more impact on the model than older games.
+
+The consequence of this approach is that we lose the first part of the season from our data. If we think that the previous 2 games is an adequate historical record for modeling then we cannot start modeling until each team has played at least 2 games. Imputing the missing data does not really make sense in this context.
+
+It is unfortunate that we lose some data. However, it seems reasonable that we should get an idea of how a team is playing before we start modeling their win, draw, and lose probabilities.
+
+#### Number of Features
+
+The other consequence of transposing the data is that the number of features explodes. If a team plays 17 away games in a season, this means there are 16 previous away games with data. If we are looking at say 4 features - for example number of corners, goals scored, fouls, shots, shots on target, then we have 16 x 5 = 80 feature columns. But, the number of features is pruned if we decide we will only use the last 4 games to make predictions. In this case we reduce the number of feature columns to 4 x 5 = 20 features.
 
 
 #### Notebooks
