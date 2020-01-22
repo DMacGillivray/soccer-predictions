@@ -46,8 +46,9 @@ The web service will provide a list of upcoming games, along with the minimum od
 So, if for example, on Saturday, there are 20 games being played across these 3 leagues, 60 minimum odds recommendations will be made - 3 for each game - An example is shown below:
 
 <p>
-    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/web-service-profitable-odds-table.png" width="807" height="136" />
+    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/match-prediction-table.png" width="797" height="277" />
 </p>
+
 
 ### 1.3 Customer Value
 
@@ -277,7 +278,7 @@ TODO: redo with same shared x scale
 
 
 
-## 6. Metrics and model Diagnosis
+## 6. Metrics and Model Diagnostics
 
 Note on probability Calibration
 
@@ -414,7 +415,7 @@ Probability calibration is done using disjoint data from training, validation, a
 + [Data Wrangling - Data Shape after Transformation](https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/007.001%20Data%20Wrangling%20-%20Data%20Shape%20after%20Transformation.ipynb) 
 
 
-## 8. Features
+## 8. Features and Feature Engineering
 
 Across season features neglected
 
@@ -575,6 +576,10 @@ The other consequence of transposing the data is that the number of features exp
 
 ### 10.2 Results on Held-Out Test Data
 
+<p>
+    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/model-betting-results.png" width="678" height="613" />
+</p>
+
 #### Notebooks
 + [Demand Data - Compile & Review](https://github.com/DMacGillivray/ontario-peak-power-forecasting/blob/master/notebooks/03.01%20-%20Data%20-%20Demand%20Data%20-%20Compile%20%26%20Review.ipynb) 
 
@@ -583,6 +588,15 @@ The other consequence of transposing the data is that the number of features exp
 ## 11. Business Results
 
 ### 11.1 XXXXXXXXX
+
+<p>
+    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/match-prediction-table.png" width="797" height="277" />
+</p>
+
+<p>
+    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/prediction-results-table.png" width="796" height="317" />
+</p>
+
 
 ### 11.2 XXXXXXXXXX
 
