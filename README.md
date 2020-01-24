@@ -600,6 +600,10 @@ The other consequence of transposing the data is that the number of features exp
     <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/model-betting-results.png" width="678" height="613" />
 </p>
 
+<p>
+    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/xgboost-tree-min.png" width="900" height="600" />
+</p>
+
 #### Notebooks
 + [Demand Data - Compile & Review](https://github.com/DMacGillivray/ontario-peak-power-forecasting/blob/master/notebooks/03.01%20-%20Data%20-%20Demand%20Data%20-%20Compile%20%26%20Review.ipynb) 
 
