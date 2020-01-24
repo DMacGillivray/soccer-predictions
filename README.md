@@ -1,6 +1,7 @@
 
 # Soccer Predictions
 
+0. [Introduction](#0-introduction)
 1. [Business Opportunity: Odds Advice](#1-business-opportunity-odds-advice)
 2. [Data Science Objective](#2-data-science-objective)
 3. [Understanding the Business Objective](#3-understanding-the-business-objective)
@@ -16,6 +17,15 @@
 13. [Next Steps](#13-next-steps)
 14. [Software Packages](#14-software-packages)
 <br/><br/>
+
+
+## 0. Introduction
+
+A Sports Bettor just cannot win.
+
+If he bets and loses, the Sports Books will let him make as many bets as he wants. If he bets and consistently wins, the Sports Books will restrict his account, or more likely close it down. Losing money is bad, but [being denied the opportunity to make money is diabolical.](https://arxiv.org/abs/1710.02824) Can we find a third path?
+
+
 
 ## 1. Business Opportunity: Odds Advice
 
@@ -639,6 +649,37 @@ The other consequence of transposing the data is that the number of features exp
 
 
 ## 13. Next Steps
+
+This project is a test
+
+
+Steps as follows:
+0. Develop a "good enough" probability prediction model
+1. Dry run the model on realtime games
+2. Develop a system to publish predictions
+3. Publish to Basic web Site
+4. Developed Web Site
+To reduce risk set up a dry run to test out the model over a few weeks
+
+Data required to do a reasonably accurate dry run
+For a league:
+1. A fixture list showing results, and data from previous games available from free API
+2. A fixture list showing upcoming games - available from free API
+3. Timely Odds Data from a broad range of Sports Books - available from free/paid API
+4. Code to process the raw data into the format required for prediction - Rework existing code
+5. A "good enough" saved model to make the predictions - Done
+
+Modeling
+The objective of this project has been to get not the best possible model, but a "good enough" model to move forward.
+There are some monumental gaps in the whole analysis and modeling process
+1. Features - This model uses easily obtained basic data. There is much richer data available that we can get with a bit of web scraping - data such as xG
+2. Feature Engineering - We can definitely do a lot better than a Poisson Regression - We can look at ELO ranking, Dixon-Coles, and many other ways to engineer better features.
+3. Feature Selection and Analysis - This has been briefly covered
+2. Odds - The data we used had a limited number of Bookmaker's odds. We can expand this by using an API to collect more comprehensive data
+3. Identifying Maximum Odds. We have committed a modeling sin. We used maximum Odds to calculate the result. However, Maximum Odds is a feature that we can only know with certainty in hindsight. basically, we contaminated our calculations with data from the future. This is a serious problem with this project, so we will need to find a work-around to deal with this transgression.
+4. Unknown unknowns - Possible Code Errors:The code base needs to be tightened up with appropriate tests
+Possible Methodology errors - Potentially, I have done something unknown that contaminates the project. I don't know. However, I will probably find out if the dry run performs terribly.
+
 
 ## 14. Software Packages
 
