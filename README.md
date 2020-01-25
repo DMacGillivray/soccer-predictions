@@ -280,11 +280,11 @@ Reviewing the odds data, we can see that the odds of a Home Win, and a Draw have
 
 As we would expect there is a stronger relationship between Shots on target vs Goals than Shots vs Goals
 <p>
-    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/home-team-shots-vs-goals.png" width="864" height="576" />
+    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/home-team-shots-vs-goals.png" width="675" height="462" />
 </p>
 
 <p>
-    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/home-team-shots-on-target-vs-goals.png" width="864" height="576" />
+    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/home-team-shots-on-target-vs-goals.png" width="690" height="469" />
 </p>
 
 #### Notebooks
@@ -294,9 +294,9 @@ As we would expect there is a stronger relationship between Shots on target vs G
 
 + [EDA - Odds](https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/005.003%20EDA%20-%20Odds.ipynb) 
 
-+ + [EDA - Shots](https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/005.004%20EDA%20-%20Shots.ipynb) 
-+ 
-+ + [EDA - Shots on Target](https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/005.005%20EDA%20-%20Shots%20on%20Target.ipynb) 
++ [EDA - Shots](https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/005.004%20EDA%20-%20Shots.ipynb) 
+
++ [EDA - Shots on Target](https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/005.005%20EDA%20-%20Shots%20on%20Target.ipynb) 
 
 
 
@@ -308,7 +308,7 @@ As stated previously, our main objective is not to classify as accurately as pos
 
 #### 6.1.1 Reliability Plots
 
-A model is well [calibrated](https://en.wikipedia.org/wiki/Calibration_(statistics)) if we assign a 80% probability for an outcome to a set of events, and we indeed see that the outcome occurs 80% of the time.
+A model is [well calibrated](https://en.wikipedia.org/wiki/Calibration_(statistics)) if we assign a 80% probability for an outcome to a set of events, and we indeed see that the outcome occurs 80% of the time.
 
 Consider that we could select all games where our model has predicted an 80% probability of a Home Win.
 
@@ -335,6 +335,7 @@ Perfect calibration looks like this:
 <p>
     <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/ECE-formula.png" width="559" height="108" />
 </p>
+
 See [The Importance of Calibrating Your Deep Production Model](http://alondaks.com/2017/12/31/the-importance-of-calibrating-your-deep-model/) for details
 
 #### 6.1.3 Maximum Calibration Error 
@@ -356,6 +357,7 @@ We cannot control the odds given by the bookmaker, but we can try and develop a 
 One [possible](https://arxiv.org/pdf/1908.08980.pdf) answer lies in a 2011 paper [“Solving the problem of inadequate scoring rules for assessing probabilistic football forecast models”](https://www.semanticscholar.org/paper/Solving-the-Problem-of-Inadequate-Scoring-Rules-for-Constantinou-Fenton/90a56f63a08784f3f63e853c30bedea48df4e478) This paper shows that soccer results can be thought of as an ordinal ranking. Home Win is first, followed by a Draw, followed by an Away Win, and that a metric called the `Rank Probability Score` is a better way to assess predictions.
 
 What is the [Rank Probability Score](https://stats.stackexchange.com/questions/112250/understanding-the-rank-probability-score)?
+
 This measures how good a probability forecast is at classifying an observed outcome. A perfect score is 0, the worst possible score is 1
 
 <p>
@@ -609,11 +611,8 @@ Random Forest with Sigmoid Probability Calibration seems to perform quite well, 
 #### Notebooks
 + [Modeling - Calibrated Classifiers](https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/009.001%20Modeling%20-%20Calibrated%20Classifiers.ipynb) 
 
-+ [Modeling - Calibrated Classifiers + Imbalance Techniques](https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/009.002%20Modeling%20-%20Calibrated%20Classifiers%20%2B%20Imbalance.ipynb)
-
 + [Modeling - Classifiers + Probability Calibration](https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/009.003%20Modeling%20-%20Classifiers%20%2B%20Probability%20Calibration.ipynb) 
 
-+ [Modeling - Classifiers + Probability Calibration + Imbalance Techniques](https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/009.004%20Modeling%20-%20Classifiers%20%2B%20Probability%20Calibration%20%2B%20Imbalance.ipynb)
 
 
 ## 10. Model Results
@@ -645,9 +644,12 @@ A single sided t-test for a mean higher than a mean of 0 gives a 0 value of 8.2%
 
 
 #### Notebooks
-+ [Demand Data - Compile & Review](https://github.com/DMacGillivray/ontario-peak-power-forecasting/blob/master/notebooks/03.01%20-%20Data%20-%20Demand%20Data%20-%20Compile%20%26%20Review.ipynb) 
 
-+ [Demand Data - Inpute Missing Values & Deal with Outliers](https://github.com/DMacGillivray/ontario-peak-power-forecasting/blob/master/notebooks/03.02%20-%20Data%20-%20Demand%20Data%20-%20Impute%20Missing%20Values%20%26%20Deal%20with%20Outliers.ipynb)
++ [Modeling - Classifiers](https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/009.001%20Modeling%20-%20Classifiers.ipynb)
++ 
++ [modeling - Classifiers + Probability Calibration](https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/009.003%20Modeling%20-%20Classifiers%20%2B%20Probability%20Calibration.ipynb) 
+
+
 
 ## 11. Business Results
 
@@ -676,9 +678,9 @@ The total results for each prediction week of the 2016-2017 and 2017-2018 season
 </p>
 
 #### Notebooks
-+ [Demand Data - Compile & Review](https://github.com/DMacGillivray/ontario-peak-power-forecasting/blob/master/notebooks/03.01%20-%20Data%20-%20Demand%20Data%20-%20Compile%20%26%20Review.ipynb) 
++ [Results - Stepping thru season predictions](https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/010.001%20Results%20-%20Stepping%20thru%20Season%20Predictions.ipynb) 
 
-+ [Demand Data - Inpute Missing Values & Deal with Outliers](https://github.com/DMacGillivray/ontario-peak-power-forecasting/blob/master/notebooks/03.02%20-%20Data%20-%20Demand%20Data%20-%20Impute%20Missing%20Values%20%26%20Deal%20with%20Outliers.ipynb) 
+
 
 
 
