@@ -23,7 +23,7 @@
 
 A Sports Bettor just cannot win.
 
-If he bets and loses, the Sports Books will let him make as many bets as he wants. If he bets and consistently wins, the Sports Books will restrict his account, or more likely close it down. Losing money is bad, but [being denied the opportunity to make money is diabolical.](https://arxiv.org/abs/1710.02824) Can we find a third path?
+If he bets and loses, the Sportsbooks will let him make as many bets as he wants. If he bets and consistently wins, the Sportsbooks will restrict his account, or more likely close it down. Losing money is bad, but [being denied the opportunity to make money is diabolical.](https://arxiv.org/abs/1710.02824) Can we find a third path?
 
 
 
@@ -38,11 +38,13 @@ The business proposal is a web service that enables a bettor to identify profita
 ### 1.2 Service Description
 
 
-The scope will be for 3 of the top European Leagues
+The scope will be for the top 5 European Leagues
 
 + English Premier League - 20 teams playing 380 games per season
 + German Bundesliga - 18 teams playing 306 games per season
 + Italian Serie A - 20 teams playing 380 games per season
++ French Ligue 1 - 20 teams playing 380 games per season
++ Spanish Primera Division (La Liga) - 20 teams playing 380 games per season
 
 Each league season is structured the same way. Every team plays every other team at home and away, and each game has one of four outcomes:
 
@@ -51,43 +53,42 @@ Each league season is structured the same way. Every team plays every other team
 + Away Team Wins
 + Game Abandoned (or some other unique event occurs) - This is so rare that it will be neglected in this analysis
 
-The web service will provide a list of upcoming games, along with the minimum odds required to make a profitable bet.
+The web service will provide a list of upcoming games for each league. Each game will list the minimum odds required to make a profitable bet.
 
-So, if for example, on Saturday, there are 20 games being played across these 3 leagues, 60 minimum odds recommendations will be made - 3 for each game - An example is shown below:
+So, if for example, on Saturday, there are 49 games being played across these 5 leagues, 147 minimum odds recommendations will be made - 3 for each game. An example for a league's games over a week period is shown below. These minimum odds recommendations are called `Fair Odds`. The system will look across multiple Sportsbooks for odds larger than the Fair Odds and shows these as `Best Odds`. The system then calculates the `Expected Value` (EV - see below) of each bet, and makes a recommendation based on maximum EV in the last column `Bet to Place`:
 
 <p>
     <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/match-prediction-table.png" width="797" height="277" />
 </p>
 
+If I want to bet on Hoffenheim, playing at Home, to win against Dortmund in the game on 16 December 2016, I would look for odds greater than 2.83. If I want to bet on Dortmund, playing away, to win against Hoffenheim I would try to find odds larger than 2.37.
 
 ### 1.3 Customer Value
 
-The bettor will take these numbers and scan the Sports Books for odds higher than these. For the service to be good, it needs to consistently find the minimum odds needed to enable a bettor to make profitable bets over the long run. Note that it may not always possible to find profitable odds at the Sports Books.
-
-So if I want to bet on Liverpool winning their 21 January game against Manchester United, I would find a Sports Book giving decimal odds higher than 1.5, and place the bet.
+The bettor will take these numbers and scan the Sportsbooks for odds higher than the Fair Odds. For the service to be good, it needs to consistently find the odds needed to enable a bettor to make break-even bets over the long run. Note that it may not always possible to find profitable odds at the Sportsbooks.
 
 ### 1.4 Business Objective
 
-Identify break-even odds for the next set of soccer games to be played in the Premier League, Bundesliga, and Serie A
+Identify break-even odds for the next set of soccer games to be played in the Premier League, Bundesliga, Serie A, Ligue 1 and La liga
 
 
 ## 2. Data Science Objective
 
-Develop a model based on free & publicly available data that will identify break-even odds for the next set of soccer games to be played in the Premier League, Bundesliga, and Serie A
+Develop a model based on free & publicly available data that will identify break-even odds for the next set of soccer games to be played in the Premier League, Bundesliga, Serie A, Ligue 1 and La Liga
 
-## 3. Understanding the Business Objective
+## 3. Understanding the Data Science Objective
 
 ### 3.1 Randomness in Soccer Games
 
 There is a significant degree of [randomness involved in soccer games](https://www.nytimes.com/2014/07/08/science/soccer-a-beautiful-game-of-chance.html). We can never really know with 100% confidence what the final score will be. This is very different to a standard classification problem - say classifying images of cats and dogs. For cats and dogs there is a solid ground truth for the class. A cat is a cat with 100% certainty. A random outcome, like a Soccer game result is different; We can never get to the point where we are predicting a single outcome with 100% certainty, because the outcome itself is uncertain.
 
-I propose that if we do a thought experiment and imagine that a football game between the same 2 teams was played 100 times, we could reasonably assume that we would not get the same final score for all 100 games. In fact it could be argued that the inherent randomness in the game is what makes it so exciting, and hence so popular.
+If we imagine that a football game between the same 2 teams was played 100 times with exactly the same starting conditions, we could reasonably assume that we would not get the same final score for all 100 games. In fact it could be argued that the inherent randomness in the game is what makes it so exciting, and hence so popular.
 
 Because of the probabilistic nature of the outcome, we need to carefully consider the types of models we use to classify game outcomes. **Our objective is not accurate classification, but accurate probabilities.**
 
 ### 3.2 What Makes a Profitable Bet?
 
-We can think of a football game like this. If the same game were played a million times, how would the possible outcomes be proportioned?
+We can think of a football game like this. If the same game were played in a million parallel universes, how would the possible outcomes be proportioned?
 
 Let us assume we simulated 1,000,000 games, and imagine the home team won 320,000 times, there was a draw 270,000 times, and the away team won 410,000 times
 
@@ -101,17 +102,16 @@ The next component to the bet is the odds.
 
 If we go to 2 Sports Books and find the following odds for home wins – How do we know which bets are profitable?
 
-Odds # 1                 |	Odds # 2
-:------------------------:|:--------------:
-2.92                   |	3.30
-
+Home Win Odds # 1         |	Home Win Odds # 2
+:------------------------:|:------------------------:
+2.92                      |	3.30
 
  
 We can calculate the Expected Value of the bet, to see which odds are favourable
 
 Expected Value (EV) is the probability of winning the bet multiplied by the potential winnings minus the probability of losing the bet multiplied by our potential loss.
 
-In the following calculations we will call the amount we will place on the bet the stake, and assume it equals 1 unit. We now have all the elements needed to make an Expected Value calculation.
+In the following calculations we will call the amount we will place on the bet the stake, and assume it is 1 unit. We now have all the elements needed to make an Expected Value calculation.
 
 + probability of winning: 0.32
 + probability of losing: 1 - probability of winning, or 1 - 0.32 = 0.68
@@ -152,13 +152,21 @@ Home Win                 |	Draw     | Away Win
 2.92                   |	3.52    | 2.3
 0.342                   |	0.284    | 0.435
 
-However, looking at these numbers, it is clear that they are not real probabilities. The problem is when we add them together, they sum to 1.061. We know that these 3 outcomes are the only possible outcomes, so "real" probabilities should sum to exactly 1. What explains this discrepancy?
+However, looking at these numbers, it is clear that they are not real probabilities. The problem is when we add them together; they sum to 1.061. We know that these 3 outcomes are the only possible outcomes, and that the "real" probabilities should sum to exactly 1. What explains this discrepancy?
 
 This is where the Sports Book makes money, and is known as the [overround or the "vig"](https://en.wikipedia.org/wiki/Mathematics_of_bookmaking#Making_a_'book'_(and_the_notion_of_overround))
 
 However, we can normalize these 3 numbers back to implied probabilities by dividing by the sum
 
-The table below shows Expected Value calculations on some typical odds 
+The table shows these normalized implied probabilities in the last row
+
+Item                    | Home Win                 |	Draw        | Away Win
+------------------------|:------------------------:|:--------------:|:------------:
+Odds                    | 2.92                     |	3.52        | 2.3
+1/ Odds                 | 0.342                    |	0.284       | 0.435
+Implied Probabilities   |0.323                     | 0.268          | 0.410
+
+The table below expands the above table to show Expected Value calculations on the same odds 
 
 <p>
     <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/odds-to-EV-calculation-table.png" width="599" height="317" />
@@ -189,7 +197,7 @@ Typical Data
 	+ Shots on Target
 	+ other data dependent on recency and particular league
 + Home Win Odds, Draw Odds, Away Win Odds:
-	+ by Sports Book for 5 or 6 Sports Books
+	+ by Sports Book for 5 or 6 Sportsbooks
 	+ Maximum Odds
 	+ Mean Odds
 	+ Other Odds such as Asian, and Goal Difference Odds
@@ -204,7 +212,7 @@ Typical Data
 + Date, Home Team, Away Team
 + Full Time Goals
 + Home Win Odds, Draw Odds, Away Win Odds:
-	+ for Pinnacle, Bet365 Sports Books
+	+ for Pinnacle, Bet365 Sportsbooks
 
 #### Notebooks
 + [Data Sources - www.football-data.co.uk](https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/004.001%20-%20Data%20Sources%20-%20www.football-data.co.uk.ipynb) 
@@ -216,7 +224,7 @@ Typical Data
 
 ### 5.1 Match Results
 
-Taking data for the German Bundesliga for all games from the 2007-2008 season up to the 2014-2015 season, we can see that there is a [home-field advantage)(https://en.wikipedia.org/wiki/Home_advantage), in that about 45% of games are won by the home team
+Taking data for the German Bundesliga for all games from the 2007-2008 season up to the 2014-2015 season, we can see that there is a [home-field advantage](https://en.wikipedia.org/wiki/Home_advantage), in that about 45% of games are won by the home team
 
 As shown 
 
@@ -247,9 +255,7 @@ The home-field advantage shows up in goals scored, as shown below:
     <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/saved-images/eda-multiple-seasons-home-and-away-goals-barplots.PNG" width="1008" height="576" />
 </p>
 
-Reviewing the chart above, we can see that the mean and variance are roughly equal for the count distributions. this point us in the direction of considering goals scored as a poisson distribution.
-
-
+Reviewing the chart above, we can see that the mean and variance are roughly equal for the count distributions. this point us in the direction of considering goals scored as a [Poisson distribution](https://en.wikipedia.org/wiki/Poisson_distribution).
 
 
 If we fit a poisson distribution to the data, we can use some diagnosis plots to compare the theoretical to the actual distribution. This is shown below for goals scored by the home team, and it looks like a remarkably good fit.
@@ -257,7 +263,7 @@ If we fit a poisson distribution to the data, we can use some diagnosis plots to
     <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/saved-images/eda-home-goals-poisson-fit-diagnosisplots.PNG" width="1008" height="1008" />
 </p>
 
-Note: Research has shown that the [Home Field Advantage varies from league to league](https://dashee87.github.io/data%20science/python/home-advantage-in-football-leagues-around-the-world/). The European leagues seem similar, but based on watching soccer, I am not convinced they are the same. Therefore, I propose training a separate model for each league. I suspect that the same type of model (e.g. decision tree) may work best across multiple leagues, but I think the fitted parameters could be different. I base this suspicion on my intuition that the style of soccer played in each league is different.
+Note: Research has shown that the [Home Field Advantage varies from league to league](https://dashee87.github.io/data%20science/python/home-advantage-in-football-leagues-around-the-world/). The European leagues seem similar, but based on watching soccer, I am not convinced they are the same. Therefore, I propose training a separate model for each league. I suspect that the same type of model (e.g. decision tree) may work best across multiple leagues, but I think the fitted parameters could be different.
 
 
 ### 5.3 Odds
@@ -272,8 +278,11 @@ TODO: redo with same shared x scale
 
 ### 5.4 Shots
 
+TODO
+
 ### 5.5 Shots on Target
 
+TODO
 
 #### Notebooks
 + [EDA - Results](https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/005.001%20EDA%20-%20Results.ipynb) 
@@ -290,9 +299,11 @@ TODO: redo with same shared x scale
 
 ## 6. Metrics and Model Diagnostics
 
-Note on probability Calibration
+As stated previously, our main objective is noy to classify as accurately as possible. Our objective is to estimate the probabilities of each class as accurately as possible. Reliability Plots are a tool to assessing how well we do in this task.
 
-### 6.1 Reliability Diagrams and Multi-Class Calibration Metrics
+### 6.1 Reliability Plots and Multi-Class Calibration Metrics
+
+#### 6.1.1 Reliability Plots
 
 calibration is an assessment of the goodness of the probability estimates from a model.
 
@@ -315,7 +326,7 @@ Perfect calibration looks like this:
 *The above plot is taken from [Alon Daks web site](http://alondaks.com/me/) from the article[The Importance of Calibrating Your Deep Production Model](http://alondaks.com/2017/12/31/the-importance-of-calibrating-your-deep-model/)*
 
 
-#### 6.2 Expected Calibration Error
+#### 6.1.2 Expected Calibration Error
 
 
 <p>
@@ -323,7 +334,7 @@ Perfect calibration looks like this:
 </p>
 See [The Importance of Calibrating Your Deep Production Model](http://alondaks.com/2017/12/31/the-importance-of-calibrating-your-deep-model/) for details
 
-#### 6.3 Maximum Calibration Error 
+#### 6.1.3 Maximum Calibration Error 
 
 <p>
     <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/MCE-formula.png" width="581" height="75" />
@@ -332,7 +343,7 @@ See [The Importance of Calibrating Your Deep Production Model](http://alondaks.c
 See [The Importance of Calibrating Your Deep Production Model](http://alondaks.com/2017/12/31/the-importance-of-calibrating-your-deep-model/) for details
 
 
-### 6.4 Rank Probability Score
+### 6.2 Rank Probability Score
 
 The objective of the project is to identify profitable betting opportunities. A profitable betting opportunity is captured if we are good at estimating its’ Expected Value. Expected Value is determined by 2 inputs:
     • The probabilities output by the model
@@ -376,7 +387,7 @@ Some comments on this table:
 + There is a significant difference between the best (lowest) Draw, and the highest (worst) Away Win
 + This means that just using baseline frequency predictions, we do far better at predicting draws, than we do at predicting either home Wins, or away Wins.
 
-### 6.5 Model Diagnosis Suite
+### 6.3 Model Diagnosis Suite
 
 It seems there is no single number that will conveniently allow us to make a comparison between various models.
 
