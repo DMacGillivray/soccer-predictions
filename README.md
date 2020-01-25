@@ -13,9 +13,8 @@
 9. [Modeling](#9-modeling)
 10. [Model Results](#10-model-results)
 11. [Business Results](#11-business-results)
-12. [Conclusion](#12-conclusion)
-13. [Next Steps](#13-next-steps)
-14. [Software Packages](#14-software-packages)
+12. [Conclusion & Next Steps](#12-conclusion-&-next-steps)
+13. [Software Packages](#14-software-packages)
 <br/><br/>
 
 
@@ -299,23 +298,23 @@ TODO
 
 ## 6. Metrics and Model Diagnostics
 
-As stated previously, our main objective is noy to classify as accurately as possible. Our objective is to estimate the probabilities of each class as accurately as possible. Reliability Plots are a tool to assessing how well we do in this task.
+As stated previously, our main objective is not to classify as accurately as possible. Our objective is to estimate the probabilities of each class as accurately as possible. Reliability Plots are a tool to assessing how well we do in this task.
 
 ### 6.1 Reliability Plots and Multi-Class Calibration Metrics
 
 #### 6.1.1 Reliability Plots
 
-calibration is an assessment of the goodness of the probability estimates from a model.
+A model is well [calibrated](https://en.wikipedia.org/wiki/Calibration_(statistics)) if we assign a 80% probability for an outcome to a set of events, and we indeed see that the outcome occurs 80% of the time.
 
-Consider that we could select all instances where a model has predicted an 80% probability of an event.
+Consider that we could select all games where our model has predicted an 80% probability of a Home Win.
 
-We can then look at the frequency of occurrence of the event across those instances
+We can then look at the frequency of occurrence of Home Wins across those instances
 
-If the event actually occurs about 80% of the time, then our model is well calibrated.
+If we see Home Wins about 80% of the time, then our model is well calibrated.
 
-If the event actually occurs about 20% of the time, then our model is over-confident.
+If we see Home Wins about 20% of the time, then our model is over-confident.
 
-If the event actually occurs over 99% of the time, then our model is under-estimating the true probability.
+If we see Home Wins 99% of the time, then our model is under-estimating the true probability.
 
 Perfect calibration looks like this:
 
@@ -348,14 +347,20 @@ See [The Importance of Calibrating Your Deep Production Model](http://alondaks.c
 The objective of the project is to identify profitable betting opportunities. A profitable betting opportunity is captured if we are good at estimating its’ Expected Value. Expected Value is determined by 2 inputs:
     • The probabilities output by the model
     • The odds given by the bookmaker
-We have to remember that our model is producing probabilities of an event, but the event is itself somewhat random.
-We cannot control the odds given by the bookmaker, but we can try and develop a model that is “good” at predicting the outcome probabilities. Note that this is different to accurately classifying outcomes. How do we assess the probability output from the model?
-One [possible](https://arxiv.org/pdf/1908.08980.pdf) answer lies in a 2011 paper [“Solving the problem of inadequate scoring rules for assessing probabilistic football forecast models”](https://www.semanticscholar.org/paper/Solving-the-Problem-of-Inadequate-Scoring-Rules-for-Constantinou-Fenton/90a56f63a08784f3f63e853c30bedea48df4e478) This paper shows that soccer results can be thought of as an ordinal ranking. Home win is first, followed by a draw, followed by an away win, and that tool called the  Rank Probability Score is a better way to assess predictions.
+At this point, we should remind ourselves our model is producing probabilities of an event, but the event is itself somewhat random.
+We cannot control the odds given by the bookmaker, but we can try and develop a model that is “good” at predicting the outcome probabilities. How do we assess the probability forecast from the model?
+One [possible](https://arxiv.org/pdf/1908.08980.pdf) answer lies in a 2011 paper [“Solving the problem of inadequate scoring rules for assessing probabilistic football forecast models”](https://www.semanticscholar.org/paper/Solving-the-Problem-of-Inadequate-Scoring-Rules-for-Constantinou-Fenton/90a56f63a08784f3f63e853c30bedea48df4e478) This paper shows that soccer results can be thought of as an ordinal ranking. Home Win is first, followed by a Draw, followed by an Away Win, and that a metric called the `Rank Probability Score` is a better way to assess predictions.
 
-What is the Rank Probability Score?
+What is the [Rank Probability Score](https://stats.stackexchange.com/questions/112250/understanding-the-rank-probability-score)?
 This measures how good a probability forecast is at classifying an observed outcome. A perfect score is 0, the worst possible score is 1
-Formula goes here
-Consider Extreme Predictions, and the impact on RPS
+
+<p>
+    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/rank-probability-score-formula.png" width="695" height="138" />
+</p>
+
+
+Consider Extreme Predictions, and the impact on RPS.
+
 It is worthwhile reviewing some examples of Rank Probability Scores for the 3 possible match outcomes – home win, draw, and away win
 
 
@@ -368,13 +373,14 @@ This table is enlightening. It is comprised of extreme prediction probabilities 
 
 + For RPS a lower score is better
 + We score an RPS of 0, when we predict an outcome with a probability of 1
-+ The best possible RPS for all outcomes – home win, draw, away win is 0
++ The best possible RPS for all outcomes – Home Win, Draw, Away Win is 0
 + The worst possible RPS for an observed Home or Away Win is 1.0
 + The worst possible RPS for an observed Draw is 0.5 – this is the impact of a draw being the middle of the 3 outcomes
     
- Consider Baseline Frequency Predictions, and the impact on RPS
-European soccer has a significant home field advantage. This varies over time, but a home win is far more likely than either a draw, or an away win. In fact a home win is about twice as likely.
-We can plug some rough baseline frequencies into our RPS calculation and determine and review the results. 
+Consider Baseline Frequency Predictions, and the impact on RPS
+ 
+European soccer has a significant home field advantage. This varies over time, but a Home Win is far more likely than either a Draw, or an Away Win. In fact a Home Win is about twice as likely.
+We can plug some rough baseline frequencies into our RPS calculation and review the results.
 
 
 <p>
@@ -393,9 +399,11 @@ It seems there is no single number that will conveniently allow us to make a com
 
 Therefore, I propose a Diagnosis Suite as follows:
 
-+ Values for Calibration of Multi-class Results 		+ Expected Calibration Error
-	+ Maximum calibration Error
-+ Calibration Plots for each Class
++ Values for Calibration of Multi-class Results
+	* Average Calibration Error (ACE)
+	* Expected Calibration Error (ECE)
+	* Maximum Calibration Error (MCE)
++ Reliability Plots for each Class
 + RPS Distribution Plots for each Predicted Class
 
 A sample Diagnosis suite is shown below:
@@ -404,9 +412,7 @@ A sample Diagnosis suite is shown below:
     <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/model-diagnosis-suite.png" width="731" height="668" />
 </p>
  
- Explanation of how to interpret
-
-
+ 
 
 #### Notebooks
 + [Metrics - Rank Probability Score](https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/006.001%20Modeling%20Strategy%20-%20Rank%20Probability%20Score%201.ipynb) 
@@ -417,6 +423,8 @@ A sample Diagnosis suite is shown below:
 ## 7. Data Wrangling
 
 ### 7.1 Data Flow
+
+The data flow process from raw data is shown below. The final step is a transformation from a time-ordered layout to a supervised learning type layout. This is discussed in more detail in the Features Section.
 
 <p>
     <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/data-flow.png" width="600" height="1732" />
@@ -438,7 +446,7 @@ Probability calibration is done using disjoint data from training, validation, a
 
 ## 8. Features and Feature Engineering
 
-Across season features neglected
+For this project there is carry across of information from one season to the next. Each season is treated as independent of all other seasons.
 
 ### 8.1 Model Results as Features
 
@@ -491,6 +499,7 @@ To get the **poisson regression probability of winning** for the **away team** i
 
 The consequence of this data transposition is that we get more features as the season progresses.
 
+
 This is illustrated below for a team playing away, by looking at their away full time goals record:
 
 <p>
@@ -507,10 +516,10 @@ The Poisson Regression used as a feature in this model is based directly on work
 This page - [Predicting Football Results with Statistical Modeling](https://dashee87.github.io/football/python/predicting-football-results-with-statistical-modelling/) - runs through a method for running a Poisson Regression applied to English Premier League data
 
 The modifications made to the original are as follows:
-+ The `statsmodels` Poisson Regression model is wrapped in a scikit-learn classifier wrapper
++ The `statsmodels` Poisson Regression model is wrapped as a scikit-learn style classifier
 + The season is split up into `game days` - a game day is a day during the season when at least one soccer game is played
-+ The game days are used to create a time series splitting function, so that all the prior season's results are used to predict a poisson mean for goals scored by every team playing on the current game day. The time series splitter walks through the season from beginning to end
-+ At the start of the season, there is not enough data for the poission regression to run, so the predict data is filled with zeros
++ The game days are used to create a time series splitting function, so that all the prior game days's results are used to predict a poisson mean for goals scored by every team playing on the current game day. The time series splitter walks through the season from beginning to end by game day
++ At the start of the season, there is not enough data for the poission regression to run, so the predicted probabilities are deliberately filled with zeros
 + As per the original methodology, the poisson means for each team are assumed to be independent, and a probability table is formed - shown below. The probabilities for Home Win, Draw, and Away Win are then summed from the table
 
 <p>
@@ -521,22 +530,21 @@ The modifications made to the original are as follows:
 
 ### 8.3 Odds as Implied Probabilities
 
-The plot below shows the distribution of home win, draw, and away win probabilities over a season.
+The plot below shows the distribution of Home Win, Draw, and Away Win probabilities over a season.
 
 <p>
     <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/implied-probabilities-distributions.png" width="640" height="433" />
 </p>
 
 
-These probabilities match with our previous analysis - section 5.1 where we showed that 
-As shown 
+These probabilities match with our previous exploratory data analysis shown below: 
 
 Home Win                 |	Draw     | Away Win
 :------------------------:|:--------------:|:------------:
 0.455                   |	0.246    | 0.297
 
 
-As shown in section 3.3 we can convert odds to an implied probability. In fact we can use this as a feature. Furthermore, because we are transposing the historical data, we can get the implied probability of the home team winning their last 3 home games, and compare it to the implied probabilities of the away team winning their last 3 away games. Even better, because odds are available prior to game start, we can use the odds for the current game as a feature.
+As shown earlier, we can convert odds to an implied probability. In fact we can use this as a feature. Furthermore, because we are transposing the historical data, we can get the implied probability of the home team winning their last 3 home games, and compare it to the implied probabilities of the away team winning their last 3 away games. Even better, because odds are available prior to game start, we can use the odds for the current game as a feature.
 
 ### 8.4 Impact of Transformation from Time Series to Supervised Pattern
 
@@ -557,17 +565,17 @@ We can look in more detail at a single feature set below
     <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/single-feature-feature-columns-shape.png" width="821" height="318" />
 </p>
 
-However, this is not too severe a problem if we believe that the last few games a team has played is a better indicator of current form than every single one of their previous games. For example, we may think we can get a good idea of a team's current form by reviewing the last 4 games a team has played rather than the last 12.
+However, this is not too severe a problem if we believe that the last few games a team has played is at least as good an indicator of their current form as all of their previous games. For example, we may think we can get a good idea of a team's current form by reviewing the last 4 games a team has played without the need to review the last 12.
 
-This is somewhat in line with [Dixon-Coles](http://web.math.ku.dk/~rolf/teaching/thesis/DixonColes.pdf) paper, where they develop the idea of a decay factor to historical results so that recent games had more impact on the model than older games.
+This is somewhat in line with [Dixon-Coles](http://web.math.ku.dk/~rolf/teaching/thesis/DixonColes.pdf) paper, where they develop the idea of a decay factor to historical results so that recent games have more impact on the model than older games.
 
 The consequence of this approach is that we lose the first part of the season from our data. If we think that the previous 2 games is an adequate historical record for modeling then we cannot start modeling until each team has played at least 2 games. Imputing the missing data does not really make sense in this context.
 
-It is unfortunate that we lose some data. However, it seems reasonable that we should get an idea of how a team is playing before we start modeling their win, draw, and lose probabilities.
+It is unfortunate that we lose some data. However, it seems reasonable that we should get an idea of how a team is playing before we start modeling their Win, Draw, and Lose probabilities.
 
 #### Number of Features
 
-The other consequence of transposing the data is that the number of features explodes. If a team plays 17 away games in a season, this means there are 16 previous away games with data. If we are looking at say 4 features - for example number of corners, goals scored, fouls, shots, shots on target, then we have 16 x 5 = 80 feature columns. But, the number of features is pruned if we decide we will only use the last 4 games to make predictions. In this case we reduce the number of feature columns to 4 x 5 = 20 features.
+The other consequence of transposing the data is that the number of features explodes. If a team plays 17 away games in a season, this means there are 16 previous away games with data. If we are looking at say 4 features - for example number of corners, goals scored, fouls, shots, shots on target, then we have 16 x 5 = 80 feature columns. But, the number of features is pruned if we decide we will only use the last 4 games to make predictions. In this case we reduce the number of feature columns to 4 x 5 = 20 features. Although not done in this project, we can also aggregate features to means, modes or use any other aggregation function. 
 
 
 #### Notebooks
@@ -577,9 +585,9 @@ The other consequence of transposing the data is that the number of features exp
 
 ## 9. Modeling
 
-### 9.1 Calibrated Classifiers
+### 9.1 Classifiers + Probability Calibration
 
-### 9.2 Classifiers + Probability Calibration
+Random Forest with Sigmoid Probability Calibration seems to perform quite well, particularly on the first validation fold. The weight of the Rank probability distributions seems to be towards the low values which is what we are looking for.  
 
 #### Random Forest + Probability Calibration Validation Set # 1
 
@@ -610,6 +618,8 @@ The other consequence of transposing the data is that the number of features exp
 
 ### 10.2 Results on Held-Out Test Data
 
+The results are not too spectacular. I guess the Home Win median RPS at 0.101 is pretty good.
+
 #### Random Forest + Probability Calibration Held Out Test Data
 <p>
     <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/rf-held-out-test-data.png" width="678" height="613" />
@@ -617,13 +627,19 @@ The other consequence of transposing the data is that the number of features exp
 
 #### Best Model Betting Simulation Results
 
+We can apply the model probability forecast to the held out data, and see how we do on gambling.
+
+The results show that 353 bets were selected to be placed on 362 games. The total profit was 13.8% averaged across all bets.
+
+A single sided t-test for a mean higher than a mean of 0 gives a 0 value of 8.2% 
 <p>
     <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/model-betting-results.png" width="678" height="613" />
 </p>
 
-<p>
-    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/xgboost-tree-min.png" width="900" height="600" />
-</p>
+TODO - Tidy up this  dec places fig labels
+
+
+
 
 #### Notebooks
 + [Demand Data - Compile & Review](https://github.com/DMacGillivray/ontario-peak-power-forecasting/blob/master/notebooks/03.01%20-%20Data%20-%20Demand%20Data%20-%20Compile%20%26%20Review.ipynb) 
@@ -632,18 +648,24 @@ The other consequence of transposing the data is that the number of features exp
 
 ## 11. Business Results
 
-### 11.1 XXXXXXXXX
+### 11.1 Simulated Predictions
+
+The table shows a set of predictions on thye held-out test data for the first week of the season where the model has enough historical data to make predictions.
+This table was explained in an earlier section 
 
 <p>
     <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/match-prediction-table.png" width="797" height="277" />
 </p>
 
+The next table shows how the previous week's predictions performed. We can see that we lost the bet on the first game, we didn't bet on the second game, and we won 1.67 on a Home Win bet on the third game (Wolfsburg vs. Eintracht Frankfurt). The total return for the week was 4.85 units (based on staking 1 unit on each bet)
 <p>
     <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/prediction-results-table.png" width="796" height="317" />
 </p>
 
 
-### 11.2 XXXXXXXXXX
+### 11.2 Weekly Results
+
+The total results for each prediction week of the 2016-2017 and 2017-2018 seasons are shown below:
 
 <p>
     <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/weekly-returns.png" width="303" height="562" />
@@ -656,43 +678,31 @@ The other consequence of transposing the data is that the number of features exp
 
 
 
-## 12. Conclusion
+## 12. Conclusion & Next Steps
 
 
-## 13. Next Steps
-
-This project is a test
-
-
-Steps as follows:
-0. Develop a "good enough" probability prediction model
-1. Dry run the model on realtime games
-2. Develop a system to publish predictions
-3. Publish to Basic web Site
-4. Developed Web Site
-To reduce risk set up a dry run to test out the model over a few weeks
-
-Data required to do a reasonably accurate dry run
-For a league:
-1. A fixture list showing results, and data from previous games available from free API
-2. A fixture list showing upcoming games - available from free API
-3. Timely Odds Data from a broad range of Sports Books - available from free/paid API
-4. Code to process the raw data into the format required for prediction - Rework existing code
-5. A "good enough" saved model to make the predictions - Done
-
-Modeling
+### 12.1 Improvements
+ 
 The objective of this project has been to get not the best possible model, but a "good enough" model to move forward.
 There are some monumental gaps in the whole analysis and modeling process
 1. Features - This model uses easily obtained basic data. There is much richer data available that we can get with a bit of web scraping - data such as xG
 2. Feature Engineering - We can definitely do a lot better than a Poisson Regression - We can look at ELO ranking, Dixon-Coles, and many other ways to engineer better features.
 3. Feature Selection and Analysis - This has been briefly covered
 2. Odds - The data we used had a limited number of Bookmaker's odds. We can expand this by using an API to collect more comprehensive data
-3. Identifying Maximum Odds. We have committed a modeling sin. We used maximum Odds to calculate the result. However, Maximum Odds is a feature that we can only know with certainty in hindsight. basically, we contaminated our calculations with data from the future. This is a serious problem with this project, so we will need to find a work-around to deal with this transgression.
-4. Unknown unknowns - Possible Code Errors:The code base needs to be tightened up with appropriate tests
-Possible Methodology errors - Potentially, I have done something unknown that contaminates the project. I don't know. However, I will probably find out if the dry run performs terribly.
+
+### 12.2 Modeling Issues
+A 13% return is too good to be true
+
+There may have been some methodology problems:
+1. Identifying Maximum Odds. We have committed a modeling sin. We used Maximum Odds to calculate the result. However, Maximum Odds is a feature that we can only know with certainty in hindsight. Basically, we contaminated our calculations with data from the future. This is a serious problem with this project, so we will need to find a work-around to deal with this transgression. This can only be done by signing up for an odds api and analyzing the data. 
+2. Unknown unknowns - Possible Code Errors:The code base needs to be tightened up with appropriate tests
+3. Possible Methodology errors - Potentially, I have done something unknown that contaminates the project. I don't know. However, a dry run on future games will probably give me some idea. 
 
 
-## 14. Software Packages
+
+
+
+## 13. Software Packages
 
 
 Package                 |	Version     | Usage
@@ -705,13 +715,8 @@ Pandas	| 0.25.1  | Data Manipulation
 Scikit Learn	| 0.20.0  | Machine Learning
 XGBoost	| 0.90  | Machine Learning
 Statsmodels	| 0.10.1  | Analysis including ARIMA Models
-FbProphet	| 0.5  | Bayesian Time Series Modelling
-Pymc3	| 3.7  | Bayesian Modelling
 Pdarima	| 1.2.0  | Automatic Parameter Finding for ARIMA Models
 Skoot	| 0.20.0  | Machine Learning Transformations on Pandas DataFrames
-Skyfield	| 1.11  | Solstice Calculations
-Holidays    | 0.9.11   | Statutory Vacation Days
-
 
 
 
@@ -722,57 +727,4 @@ Holidays    | 0.9.11   | Statutory Vacation Days
 
 
 <br/><br/>
-
-Project Organization
-------------
-
-    ├── LICENSE
-    ├── Makefile           <- Makefile with commands like `make data` or `make train`
-    ├── README.md          <- The top-level README for developers using this project.
-    ├── data
-    │   ├── external       <- Data from third party sources.
-    │   ├── interim        <- Intermediate data that has been transformed.
-    │   ├── processed      <- The final, canonical data sets for modeling.
-    │   └── raw            <- The original, immutable data dump.
-    │
-    ├── docs               <- A default Sphinx project; see sphinx-doc.org for details
-    │
-    ├── models             <- Trained and serialized models, model predictions, or model summaries
-    │
-    ├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
-    │                         the creator's initials, and a short `-` delimited description, e.g.
-    │                         `1.0-jqp-initial-data-exploration`.
-    │
-    ├── references         <- Data dictionaries, manuals, and all other explanatory materials.
-    │
-    ├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
-    │   └── figures        <- Generated graphics and figures to be used in reporting
-    │
-    ├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
-    │                         generated with `pip freeze > requirements.txt`
-    │
-    ├── setup.py           <- makes project pip installable (pip install -e .) so src can be imported
-    ├── src                <- Source code for use in this project.
-    │   ├── __init__.py    <- Makes src a Python module
-    │   │
-    │   ├── data           <- Scripts to download or generate data
-    │   │   └── make_dataset.py
-    │   │
-    │   ├── features       <- Scripts to turn raw data into features for modeling
-    │   │   └── build_features.py
-    │   │
-    │   ├── models         <- Scripts to train models and then use trained models to make
-    │   │   │                 predictions
-    │   │   ├── predict_model.py
-    │   │   └── train_model.py
-    │   │
-    │   └── visualization  <- Scripts to create exploratory and results oriented visualizations
-    │       └── visualize.py
-    │
-    └── tox.ini            <- tox file with settings for running tox; see tox.testrun.org
-
-
---------
-
-<p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>
 
