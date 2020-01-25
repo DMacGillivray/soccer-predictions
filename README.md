@@ -13,7 +13,7 @@
 9. [Modeling](#9-modeling)
 10. [Model Results](#10-model-results)
 11. [Business Results](#11-business-results)
-12. [Conclusion & Next Steps](#12-conclusion-&-next-steps)
+12. [Conclusion and Next Steps](#12-conclusion-and-next-steps)
 13. [Software Packages](#14-software-packages)
 <br/><br/>
 
@@ -22,7 +22,9 @@
 
 A Sports Bettor just cannot win.
 
-If he bets and loses, the Sportsbooks will let him make as many bets as he wants. If he bets and consistently wins, the Sportsbooks will restrict his account, or more likely close it down. Losing money is bad, but [being denied the opportunity to make money is diabolical.](https://arxiv.org/abs/1710.02824) Can we find a third path?
+If he bets and loses, the Sportsbooks will let him make as many bets as he wants. If he bets and consistently wins, the Sportsbooks will restrict his account, or more likely close it down. Losing money is bad, but [being denied the opportunity to make money is diabolical.](https://arxiv.org/abs/1710.02824)
+
+Can we find a third path?
 
 
 
@@ -270,18 +272,20 @@ Note: Research has shown that the [Home Field Advantage varies from league to le
 Reviewing the odds data, we can see that the odds of a Home Win, and a Draw have a much lower maximum than the odds for an Away Win. The Away Win odds scale is much larger. This makes sense when we consider that the reciprocal of the odds can be interpreted as being close to a probability. If the probability of an Away Win is much less likely, then the odds increase.
 
 <p>
-    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/saved-images/eda-odds-bundesliga-multipl-bookies-multiple-seasons-histograms.PNG" width="864" height="576" />
+    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/saved-images/eda-odds-bundesliga-multiple-bookies-multiple-seasons-histograms.PNG" width="864" height="576" />
 </p>
 
-TODO: redo with same shared x scale
 
-### 5.4 Shots
+### 5.4 Shots and Shots on Target
 
-TODO
+As we would expect there is a stronger relationship between Shots on target vs Goals than Shots vs Goals
+<p>
+    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/home-team-shots-vs-goals.png" width="864" height="576" />
+</p>
 
-### 5.5 Shots on Target
-
-TODO
+<p>
+    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/home-team-shots-on-target-vs-goals.png" width="864" height="576" />
+</p>
 
 #### Notebooks
 + [EDA - Results](https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/005.001%20EDA%20-%20Results.ipynb) 
@@ -633,10 +637,9 @@ The results show that 353 bets were selected to be placed on 362 games. The tota
 
 A single sided t-test for a mean higher than a mean of 0 gives a 0 value of 8.2% 
 <p>
-    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/model-betting-results.png" width="678" height="613" />
+    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/model-betting-results.png" width="734" height="628" />
 </p>
 
-TODO - Tidy up this  dec places fig labels
 
 
 
@@ -650,17 +653,18 @@ TODO - Tidy up this  dec places fig labels
 
 ### 11.1 Simulated Predictions
 
-The table shows a set of predictions on thye held-out test data for the first week of the season where the model has enough historical data to make predictions.
-This table was explained in an earlier section 
+The table shows a set of predictions on the held-out test data for the second week of the season where the model has enough historical data to make predictions.
+This table was explained in an earlier section
 
 <p>
     <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/match-prediction-table.png" width="797" height="277" />
 </p>
 
-The next table shows how the previous week's predictions performed. We can see that we lost the bet on the first game, we didn't bet on the second game, and we won 1.67 on a Home Win bet on the third game (Wolfsburg vs. Eintracht Frankfurt). The total return for the week was 4.85 units (based on staking 1 unit on each bet)
+The next table shows how the previous week's predictions performed. We can see that we lost the bet on the first game, we didn't bet on the second game, and we won 1.67 on a Home Win bet on the third game (Wolfsburg vs. Eintracht Frankfurt). The total return for the week was 6.47 units (based on staking 1 unit on each bet)
 <p>
-    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/prediction-results-table.png" width="796" height="317" />
+    <img src="https://github.com/DMacGillivray/soccer-predictions/blob/master/notebooks/images/prediction-results-table.png" width="824" height="332" />
 </p>
+
 
 
 ### 11.2 Weekly Results
@@ -678,7 +682,7 @@ The total results for each prediction week of the 2016-2017 and 2017-2018 season
 
 
 
-## 12. Conclusion & Next Steps
+## 12. Conclusion and Next Steps
 
 
 ### 12.1 Improvements
@@ -723,7 +727,7 @@ Skoot	| 0.20.0  | Machine Learning Transformations on Pandas DataFrames
 <br/><br/>
 
 
-						David MacGillivray – Springboard Capstone Project 2 – 2 February 2020
+				David MacGillivray – Springboard Capstone Project 2 – 2 February 2020
 
 
 <br/><br/>
