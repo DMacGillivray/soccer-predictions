@@ -4,7 +4,7 @@
 0. [Introduction](#0-introduction)
 1. [Business Opportunity: Odds Advice](#1-business-opportunity-odds-advice)
 2. [Data Science Objective](#2-data-science-objective)
-3. [Understanding the Business Objective](#3-understanding-the-business-objective)
+3. [Understanding the Data Science Objective](#3-understanding-the-data-science-objective)
 4. [Data Sources and Description](#4-data-sources-and-description)
 5. [Exploratory Data Analysis](#5-exploratory-data-analysis)
 6. [Metrics and Model Diagnostics](#6-metrics-and-model-diagnostics)
@@ -14,7 +14,7 @@
 10. [Model Results](#10-model-results)
 11. [Business Results](#11-business-results)
 12. [Conclusion and Next Steps](#12-conclusion-and-next-steps)
-13. [Software Packages](#14-software-packages)
+13. [Software Packages](#13-software-packages)
 <br/><br/>
 
 
